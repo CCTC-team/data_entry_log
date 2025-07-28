@@ -1,0 +1,85 @@
+{
+  "name": "Data Entry Log",
+  "description": "Module that helps data managers manage project data",
+  "namespace": "CCTC\\DataEntryLogModule",
+  "framework-version": 14,
+  "authors": [
+    {
+      "name": "Richard Hardy",
+      "email": "rmh54@cam.ac.uk",
+      "institution": "University of Cambridge - Cambridge Cancer Trials Centre"
+    }
+  ],
+
+  "enable-ajax-logging": true,
+
+  "auth-ajax-actions": [
+    "action-1",
+    "action-2"
+  ],
+
+
+
+  "links": {
+    "project": [
+      {
+        "name": "Data Entry Log",
+        "key": "data-entry-log",
+        "icon": "fas fa-clipboard-list",
+        "url": "index.php",
+        "show-header-and-footer": true
+      }
+    ]
+  },
+  "system-settings": [
+  ],
+  "project-settings": [
+    {
+      "key": "max-days-all-records",
+      "name": "The maximum number of days permitted when not limiting the records being queried. Limit to improve performance",
+      "type": "text",
+      "repeatable": false,
+      "required": true,
+      "super-users-only": true
+    },
+    {
+      "key": "always-exclude-fields-with-regex",
+      "name": "When given, any fields matching the given regex will always be excluded from the list of data entry logs. Do not include any leading or trailing '/'s",
+      "type": "textarea",
+      "repeatable": false,
+      "required" : false,
+      "super-users-only": true
+    },
+    {
+      "key": "display-event-id-with-event-name",
+      "name": "If checked, event names are suffixed with the event ID e.g. 'Event 1 [66]' rather than simply 'Event 1'",
+      "type": "checkbox",
+      "repeatable": false,
+      "required": false,
+      "super-users-only": true
+    },
+    {
+      "key": "display-arm-id-with-arm-name",
+      "name": "If checked, arm names are suffixed with the arm ID e.g. 'Arm 1 [1]' rather than simply 'Arm 1'",
+      "type": "checkbox",
+      "repeatable": false,
+      "required": false,
+      "super-users-only": true
+    },
+    {
+      "key": "display-dag-id-with-dag-name",
+      "name": "If checked, DAG names are suffixed with the DAG ID e.g. 'DAG1 [1]' rather than simply 'DAG 1'",
+      "type": "checkbox",
+      "repeatable": false,
+      "required": false,
+      "super-users-only": true
+    }
+  ],
+
+  "compatibility": {
+    "php-version-min": "8.0.27",
+    "php-version-max": "8.2",
+    "redcap-version-min": "14.7.0",
+    "redcap-version-max": "14.7.0"
+  }
+}

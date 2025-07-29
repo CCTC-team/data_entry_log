@@ -6,7 +6,7 @@ begin
 #     {
 #       "fieldName": "notesfld",
 #       "instance": "0",
-#       "fieldValue": "soemthing with ' single\r\n'\r\nquotes, \"\r\ndoubles and line \" breaks"
+#       "fieldValue": "something with ' single\r\n'\r\nquotes, \"\r\ndoubles and line \" breaks"
 #     }
 
     declare init mediumtext;
@@ -28,8 +28,28 @@ begin
     -- rest except value
     set rest = replace(query COLLATE utf8mb4_unicode_ci, concat(init COLLATE utf8mb4_unicode_ci, valQuoted COLLATE utf8mb4_unicode_ci), '' COLLATE utf8mb4_unicode_ci);
 
+    -- fix added to resolve issue #108 - previously the assumption was that the field_name is at position 4
+    -- however, that's not true so need to iterate to find it
+    set @i = 1;
+    set @maxI = 10;
+    set @field = '';
+
+    WHILE @i <= @maxI DO
+        -- Get the current split value
+        set @field = rh_split_string(rest, 'AND', @i);
+
+        -- Check if the value starts with 'field_name'
+        IF LEFT(LTRIM(@field), 10) = 'field_name' THEN
+            -- kill the loop
+            set @i = 10;
+        END IF;
+
+        -- Increment the index
+        SET @i = @i + 1;
+    END WHILE;
+
     -- field name
-    set fieldName = trim(both '''' COLLATE utf8mb4_unicode_ci from trim(replace(rh_split_string(rest COLLATE utf8mb4_unicode_ci, 'AND', 4), 'field_name = ' COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci)));
+    set fieldName = trim(both '''' COLLATE utf8mb4_unicode_ci from trim(replace(rh_split_string(@field COLLATE utf8mb4_unicode_ci, 'AND', 1), 'field_name = ' COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci)));
 
     -- get the full instance part first
     set instanceInit = trim(';' COLLATE utf8mb4_unicode_ci from rh_split_string(rest, 'AND', 5));
@@ -59,7 +79,3 @@ select json_valid(@parts);  -- expect 1 if valid
 select json_value(@parts, '$.fieldName');
 select json_value(@parts, '$.instance');
 select json_value(@parts, '$.fieldValue');*/
-
-
-
-

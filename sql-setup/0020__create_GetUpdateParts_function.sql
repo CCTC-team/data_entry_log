@@ -19,14 +19,14 @@ begin
     declare instance mediumtext;
 
     set init = rh_split_string(query, '''', 1);
-    set valOnwards = replace(query COLLATE utf8mb4_unicode_ci, init COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci);
+    set valOnwards = replace(query, init, '');
     set valQuoted = regexp_substr(valOnwards, "(?s)^'(.*?)(?<!')'(?!')");
 
     -- get value
-    set value = trim(both '''' COLLATE utf8mb4_unicode_ci from valQuoted COLLATE utf8mb4_unicode_ci);
+    set value = trim(both '''' from valQuoted);
 
     -- rest except value
-    set rest = replace(query COLLATE utf8mb4_unicode_ci, concat(init COLLATE utf8mb4_unicode_ci, valQuoted COLLATE utf8mb4_unicode_ci), '' COLLATE utf8mb4_unicode_ci);
+    set rest = replace(query, concat(init, valQuoted), '');
 
     -- fix added to resolve issue #108 - previously the assumption was that the field_name is at position 4
     -- however, that's not true so need to iterate to find it
@@ -49,7 +49,7 @@ begin
     END WHILE;
 
     -- field name
-    set fieldName = trim(both '''' COLLATE utf8mb4_unicode_ci from trim(replace(rh_split_string(@field COLLATE utf8mb4_unicode_ci, 'AND', 1), 'field_name = ' COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci)));
+    set fieldName = trim(both '''' from trim(replace(rh_split_string(@field, 'AND', 1), 'field_name = ' COLLATE utf8mb4_unicode_ci, '')));
 
     -- get the full instance part first
     set instanceInit = trim(';' COLLATE utf8mb4_unicode_ci from rh_split_string(rest, 'AND', 5));
@@ -58,7 +58,7 @@ begin
     if instanceInit like '%NULL' or instanceInit like '%NULL%' then
         set instance = 0;
     else
-        set instance = trim(both '''' COLLATE utf8mb4_unicode_ci from trim(replace(instanceInit COLLATE utf8mb4_unicode_ci, 'instance = ' COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci)));
+        set instance = trim(both '''' from trim(replace(instanceInit, 'instance = ', '')));
     end if;
 
     return concat('{ "fieldName" : "', fieldName, '", "instance" : ', instance, ', "fieldValue" : ', json_quote(value), '}');

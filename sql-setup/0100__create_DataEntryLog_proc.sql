@@ -47,19 +47,19 @@ create procedure GetDataEntryLogs
         in recordId varchar(10),
         in minDate bigint,
         in maxDate bigint,
-        in dagUser varchar(100) collate utf8mb4_unicode_ci,     -- if given, must restrict to this user, if null get any
-        in logUser varchar(255) collate utf8mb4_unicode_ci,
+        in dagUser varchar(100),     -- if given, must restrict to this user, if null get any
+        in logUser varchar(255),
         in eventId int,
         in groupId int,
         in armNum int,
         in instance smallint(4),
-        in logDescription varchar(100) collate utf8mb4_unicode_ci, -- limit of size in log event tables
-        in changeReason text collate utf8mb4_unicode_ci,                -- uses 'like'
-        in formName varchar(100) collate utf8mb4_unicode_ci,
-        in fieldNameOrLabel varchar(100) collate utf8mb4_unicode_ci,     -- uses 'like' on either field name or label
-        in newValue varchar(100) collate utf8mb4_unicode_ci,     -- uses 'like'
+        in logDescription varchar(100), -- limit of size in log event tables
+        in changeReason text,                -- uses 'like'
+        in formName varchar(100),
+        in fieldNameOrLabel varchar(100),     -- uses 'like' on either field name or label
+        in newValue varchar(100),     -- uses 'like'
         -- uses not rlike excludeFieldNameRegex to exclude any fields matching the expression e.g. _monstat$|_crfver$ will exclude fields ending in _monstat and _crfver
-        in excludeFieldNameRegex varchar(100) collate utf8mb4_unicode_ci
+        in excludeFieldNameRegex varchar(100)
     )
 begin
 
@@ -128,7 +128,7 @@ begin
 
     -- proj id MUST be given as module works at project level so this will return nothing if not a
     -- proper project id
-    set logging_table = (select log_event_table from redcap_projects where redcap_projects.project_id = projectId) collate utf8mb4_unicode_ci;
+    set logging_table = (select log_event_table from redcap_projects where redcap_projects.project_id = projectId);
 
     -- check if a valid log table found or signal error otherwise
     if logging_table is null or logging_table = '' then
@@ -159,16 +159,16 @@ begin
     create temporary table rh_logs_init
     (
         urn mediumint not null auto_increment primary key,
-        ts bigint(14) collate utf8mb4_unicode_ci null,
-        sql_log mediumtext collate utf8mb4_unicode_ci,
-        user varchar(255) collate utf8mb4_unicode_ci null,
-        description varchar(100)  collate utf8mb4_unicode_ci null,
-        change_reason text collate utf8mb4_unicode_ci null,
-        event_id int(10) collate utf8mb4_unicode_ci null,
-        pk varchar(200) collate utf8mb4_unicode_ci null,
-        group_id int collate utf8mb4_unicode_ci null,
-        group_name varchar(255) collate utf8mb4_unicode_ci null
-    );
+        ts bigint(14) DEFAULT NULL,
+        sql_log mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        user varchar(255) DEFAULT NULL,
+        description varchar(100)  DEFAULT NULL,
+        change_reason text DEFAULT NULL,
+        event_id int(10) DEFAULT NULL,
+        pk varchar(200) DEFAULT NULL,
+        group_id int DEFAULT NULL,
+        group_name varchar(255) DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
     set usesDags = (select count(*) from redcap_data_access_groups where project_id = projectId);
     if usesDags > 0 then
@@ -288,19 +288,19 @@ begin
     create temporary table rh_logs
     (
         urn mediumint,
-        ts bigint(14) collate utf8mb4_unicode_ci null,
-        sql_log mediumtext collate utf8mb4_unicode_ci null,
-        user varchar(255) collate utf8mb4_unicode_ci null,
-        description varchar(100) collate utf8mb4_unicode_ci null,
-        change_reason text collate utf8mb4_unicode_ci null,
-        event_id int(10) collate utf8mb4_unicode_ci null,
-        pk varchar(200) collate utf8mb4_unicode_ci null,
-        group_id int collate utf8mb4_unicode_ci null,
-        group_name varchar(255) collate utf8mb4_unicode_ci null,
-        field_name varchar(255) collate utf8mb4_unicode_ci null,
-        instance int collate utf8mb4_unicode_ci null,
-        field_value mediumtext collate utf8mb4_unicode_ci null
-    );
+        ts bigint(14) DEFAULT NULL,
+        sql_log mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        user varchar(255) DEFAULT NULL,
+        description varchar(100) DEFAULT NULL,
+        change_reason text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        event_id int(10) DEFAULT NULL,
+        pk varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        group_id int DEFAULT NULL,
+        group_name varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        field_name varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        instance int DEFAULT NULL,
+        field_value mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
     -- this is not ideal - have to iterate rows rather than using the usual approach, but there isn't really
     -- a choice given the limitations of mariadb where you can't run functions that return tables
@@ -318,9 +318,9 @@ begin
         -- iterate each query in the sql_log column and create a record for it in rh_logs
         -- this will therefore expand the table providing one row for every nested query in sql_log
         set queryCount = (select round ((length(allLogs) - length( replace (
-                allLogs COLLATE utf8mb4_unicode_ci,
-                '\n' COLLATE utf8mb4_unicode_ci,
-                '' COLLATE utf8mb4_unicode_ci))) / length('\n')) + 1 as count);
+                allLogs,
+                '\n',
+                ''))) / length('\n')) + 1 as count);
         set c = 1;
 
         -- process each query
@@ -373,25 +373,25 @@ begin
     drop table if exists rh_results;
     create temporary table rh_results
     (
-        ts bigint(14) collate utf8mb4_unicode_ci null,
-        log_user varchar(255) collate utf8mb4_unicode_ci null,
-        recordId varchar(200) collate utf8mb4_unicode_ci null,
-        group_id int collate utf8mb4_unicode_ci null,
-        group_name varchar(255) collate utf8mb4_unicode_ci null,
-        event_id int(10) collate utf8mb4_unicode_ci null,
-        event_name varchar(64) collate utf8mb4_unicode_ci null,
-        arm_num int(2) collate utf8mb4_unicode_ci null,
-        arm_name varchar(50) collate utf8mb4_unicode_ci null,
-        instance smallint(4) collate utf8mb4_unicode_ci null,
-        form_name varchar(100) collate utf8mb4_unicode_ci null,
-        field_name varchar(100) collate utf8mb4_unicode_ci null,
-        field_label mediumtext collate utf8mb4_unicode_ci null,
-        value text collate utf8mb4_unicode_ci null,
-        change_reason text collate utf8mb4_unicode_ci null,
-        description varchar(100) collate utf8mb4_unicode_ci null,
-        query_type varchar(10) collate utf8mb4_unicode_ci null,
-        element_type varchar(50) collate utf8mb4_unicode_ci null
-    );
+        ts bigint(14) DEFAULT NULL,
+        log_user varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        recordId varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        group_id int DEFAULT NULL,
+        group_name varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        event_id int(10) DEFAULT NULL,
+        event_name varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        arm_num int(2) DEFAULT NULL,
+        arm_name varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        instance smallint(4) DEFAULT NULL,
+        form_name varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        field_name varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        field_label mediumtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        value text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        change_reason text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        description varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        query_type varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        element_type varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
     -- get the final output joining with the data table and metadata info
     -- this has to be another prepared statement as mariadb cannot use variables in a query for limit
@@ -489,7 +489,7 @@ begin
                 or (logs.instance = meta.instance))
     where
         -- always remove fields matching the regex of excludeFieldNameRegex
-        (? is null or logs.field_name collate utf8mb4_unicode_ci not rlike ?)
+        (? is null or logs.field_name not rlike ?)
 
         -- eventId
         and (? is null or meta.event_id = ?)
@@ -500,7 +500,7 @@ begin
         -- logDescription
         and (? is null or logs.description = ?)
         -- changeReason
-        and (? is null or logs.change_reason collate utf8mb4_unicode_ci like concat(''%'', ?, ''%''))
+        and (? is null or logs.change_reason like concat(''%'', ?, ''%''))
         -- logUser
         and (? is null or logs.user = ?)
         -- formName
@@ -509,9 +509,9 @@ begin
         and (? is null or meta.instance = ? or (? = -1 and meta.instance is null))
         -- field name or label
         and (? is null
-            or (meta.field_name collate utf8mb4_unicode_ci like concat(''%'', ?, ''%'') or meta.element_label collate utf8mb4_unicode_ci like concat(''%'', ?, ''%'')))
+            or (meta.field_name like concat(''%'', ?, ''%'') or meta.element_label like concat(''%'', ?, ''%'')))
         -- value
-        and (? is null or meta.value collate utf8mb4_unicode_ci like concat(''%'', ?, ''%''))
+        and (? is null or meta.value like concat(''%'', ?, ''%''))
 
     order by
         -- this should preserve the timestamp order applied to logs earlier

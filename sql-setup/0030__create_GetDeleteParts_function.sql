@@ -22,10 +22,10 @@ begin
     set fieldName = trim(both '''' COLLATE utf8mb4_unicode_ci from trim(rh_split_string(fieldInit, '=', 2)));
 
     set valueInit = rh_split_string(query, 'AND', 5);
-    set value = trim(both '''' COLLATE utf8mb4_unicode_ci from trim(replace(valueInit COLLATE utf8mb4_unicode_ci, 'value = ' COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci)));
+    set value = trim(both '''' from trim(replace(valueInit, 'value = ', '')));
 
     -- removing the value means can trust the split string
-    set removeVal = replace(query COLLATE utf8mb4_unicode_ci, valueInit COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci);
+    set removeVal = replace(query, valueInit, '');
 
     -- now can split using ANDAND after removing value
     set instanceInit = rh_split_string(removeVal, 'ANDAND', 2);
@@ -33,7 +33,7 @@ begin
             (
                 select if(lower(instanceInit) like '%null%',
                           0,
-                          (select trim(replace(SUBSTRING_INDEX(instanceInit COLLATE utf8mb4_unicode_ci, "'" COLLATE utf8mb4_unicode_ci, 2), 'instance = ''' COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci)))));
+                          (select trim(replace(SUBSTRING_INDEX(instanceInit, "'", 2), 'instance = ''', '')))));
 
     return concat('{ "fieldName" : "', fieldName, '", "instance" : ', instance, ', "fieldValue" : ', json_quote(value), '}');
 end;

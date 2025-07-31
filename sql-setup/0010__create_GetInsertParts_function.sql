@@ -26,7 +26,7 @@ begin
     set fieldName = substring(fieldPart from 2 for instr(clean, ',') - 3);
 
     -- update the cleaned string to remove the field name to leave the following
-    set clean = trim(replace(clean COLLATE utf8mb4_unicode_ci, fieldPart COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci));
+    set clean = trim(replace(clean , fieldPart , '' ));
 
     -- now get the instance value
     set instancePart = reverse(left(reverse(clean), instr(reverse(clean), ',')));
@@ -35,13 +35,13 @@ begin
         (
             select if(lower(instancePart) like '%null%',
                       0,
-                      (select replace(SUBSTRING_INDEX(instancePart COLLATE utf8mb4_unicode_ci, "'" COLLATE utf8mb4_unicode_ci, 2), ", '" COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci))));
+                      (select replace(SUBSTRING_INDEX(instancePart , "'" , 2), ", '" , '' ))));
 
     -- update clean by removing the instance part
-    set clean = trim(replace(clean COLLATE utf8mb4_unicode_ci, instancePart COLLATE utf8mb4_unicode_ci, '' COLLATE utf8mb4_unicode_ci));
+    set clean = trim(replace(clean , instancePart , '' ));
 
     -- what's left is the value
-    set value = trim(both "'" COLLATE utf8mb4_unicode_ci from clean COLLATE utf8mb4_unicode_ci);
+    set value = trim(both "'"  from clean );
 
     return concat('{ "fieldName" : "', fieldName, '", "instance" : ', instance, ', "fieldValue" : ', json_quote(value), '}');
 

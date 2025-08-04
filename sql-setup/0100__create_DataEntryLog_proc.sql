@@ -40,26 +40,26 @@
 
 create procedure GetDataEntryLogs
     (
-    in skipCount int,
-    in pageSize int,
-    in projectId int,
-    in retDirection varchar(4),
-    in recordId varchar(10),
-    in minDate bigint,
-    in maxDate bigint,
-    in dagUser varchar(100) collate utf8mb4_unicode_ci,     -- if given, must restrict to this user, if null get any
-    in logUser varchar(255) collate utf8mb4_unicode_ci,
-    in eventId int,
-    in groupId int,
-    in armNum int,
-    in instance smallint(4),
-    in logDescription varchar(100) collate utf8mb4_unicode_ci, -- limit of size in log event tables
-    in changeReason text collate utf8mb4_unicode_ci,                -- uses 'like'
-    in formName varchar(100) collate utf8mb4_unicode_ci,
-    in fieldNameOrLabel varchar(100) collate utf8mb4_unicode_ci,     -- uses 'like' on either field name or label
-    in newValue varchar(100) collate utf8mb4_unicode_ci,     -- uses 'like'
-    -- uses not rlike excludeFieldNameRegex to exclude any fields matching the expression e.g. _monstat$|_crfver$ will exclude fields ending in _monstat and _crfver
-    in excludeFieldNameRegex varchar(100) collate utf8mb4_unicode_ci
+        in skipCount int,
+        in pageSize int,
+        in projectId int,
+        in retDirection varchar(4),
+        in recordId varchar(10),
+        in minDate bigint,
+        in maxDate bigint,
+        in dagUser varchar(100) collate utf8mb4_unicode_ci,     -- if given, must restrict to this user, if null get any
+        in logUser varchar(255) collate utf8mb4_unicode_ci,
+        in eventId int,
+        in groupId int,
+        in armNum int,
+        in instance smallint(4),
+        in logDescription varchar(100) collate utf8mb4_unicode_ci, -- limit of size in log event tables
+        in changeReason text collate utf8mb4_unicode_ci,                -- uses 'like'
+        in formName varchar(100) collate utf8mb4_unicode_ci,
+        in fieldNameOrLabel varchar(100) collate utf8mb4_unicode_ci,     -- uses 'like' on either field name or label
+        in newValue varchar(100) collate utf8mb4_unicode_ci,     -- uses 'like'
+        -- uses not rlike excludeFieldNameRegex to exclude any fields matching the expression e.g. _monstat$|_crfver$ will exclude fields ending in _monstat and _crfver
+        in excludeFieldNameRegex varchar(100) collate utf8mb4_unicode_ci
     )
 begin
 

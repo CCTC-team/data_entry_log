@@ -20,6 +20,8 @@ Enabling the module at a system level will automatically create some functions a
 
 Disabling the module at a system level will automatically drop the stored procedure and all functions as listed above.
 
+When a new version of the module becomes available, the module should be disabled and then re-enabled from the Control Center at the system level. Failure to do so may cause the module to malfunction.
+
 The following project level settings are available;
 
 - `max-days-all-records` - the maximum number of days available to view in the log when viewing all records. A sensible

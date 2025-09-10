@@ -34,7 +34,7 @@ begin
     set instance =
         (
             select if(lower(instancePart) like '%null%',
-                      0,
+                      1,
                       (select replace(SUBSTRING_INDEX(instancePart , "'" , 2), ", '" , '' ))));
 
     -- update clean by removing the instance part

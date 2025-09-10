@@ -56,7 +56,7 @@ begin
 
     -- handle if null
     if instanceInit like '%NULL' or instanceInit like '%NULL%' then
-        set instance = 0;
+        set instance = 1;
     else
         set instance = trim(both '''' from trim(replace(instanceInit, 'instance = ', '')));
     end if;

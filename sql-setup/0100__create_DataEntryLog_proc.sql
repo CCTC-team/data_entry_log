@@ -104,7 +104,7 @@ begin
 
     declare hard_limit_count int;
     declare logging_table varchar(1000);
-    declare datatable varchar(1000);    -- note do NOT use data_table as causes conflict
+    declare dataTable varchar(1000);
     declare mess mediumtext;
     declare sqlQuery mediumtext;
 
@@ -173,49 +173,21 @@ begin
     set usesDags = (select count(*) from redcap_data_access_groups where project_id = projectId);
     if usesDags > 0 then
         set dagPart =
-         CONCAT(' ,(
-                select distinct
-                    w.project_id,
-                    w.record,
-                    y.username,
-                    x.group_id,
-                    z.group_name
-                from
-                    ', dataTable, ' w
-                    left outer join
+         CONCAT(' left join
                     (
                         select project_id, value as group_id, record from ', dataTable, '
                         where project_id = ? and field_name = ''__GROUPID__''
                     ) x
-                    on w.project_id = x.project_id
-                    and w.record = x.record
-                    left join
-                    (
-                        -- gets the group_id for the user from either source for this
-                        select distinct project_id, group_id, username from redcap_data_access_groups_users
-                        where project_id = ?
-                        union
-                        select project_id, group_id, username from redcap_user_rights
-                        where project_id = ?
-                        and group_id is not null
-                    ) y
-                    on x.project_id = y.project_id
-                    and x.group_id = y.group_id
+                    on a.project_id = x.project_id
+                    and a.pk = x.record
                     left join redcap_data_access_groups z
-                    on y.project_id = z.project_id
-                    and y.group_id = z.group_id
-                where
-                    w.project_id = ?
-
-                    -- filter for dagUser
-                    and ? is null or ? = y.username
-            ) b ');
-        set dagWhere =
-            ' and a.project_id = b.project_id
-            and a.pk = b.record ';
+                    on x.project_id = z.project_id
+                    and x.group_id = z.group_id
+                ');
         set dagSelect =
-            ', b.group_id,
-            b.group_name ';
+            ', x.group_id,
+            z.group_name ';
+        set dagWhere = 'and ((x.group_id = (select group_id from redcap_user_rights where project_id = ? and username = ?)) or ((select group_id from redcap_user_rights where project_id = ? and username = ?) is null))';
     else
         set dagSelect =
             ', null as group_id,
@@ -263,9 +235,9 @@ begin
             -- includes dags
             prepare qry from sqlQuery;
             execute qry using
-                projectId, projectId, projectId, projectId,
-                dagUser, dagUser,
-                projectId,
+                projectId, projectId,
+                projectId, dagUser,
+                projectId, dagUser,
                 recordId, recordId,
                 minDate, minDate,
                 maxDate, maxDate;
@@ -340,8 +312,8 @@ begin
             -- only do the insert when the field is not record_id
             if json_value(parts, '$.fieldName') != 'record_id' then
 
-                insert into rh_logs (urn, ts, sql_log, user, description, change_reason, event_id, pk, group_id, group_name,
-                                    field_name, instance, field_value)
+                insert into rh_logs (urn, ts, sql_log, user, description, change_reason, event_id, pk, group_id,
+                                     group_name, field_name, instance, field_value)
                 select
                     urn,
                     ts,
@@ -410,93 +382,41 @@ begin
         logs.pk as recordId,
         logs.group_id,
         logs.group_name,
-        meta.event_id,
-        meta.event_name,
-        meta.arm_num,
-        meta.arm_name,
-        meta.instance,
-        meta.form_name,
-        meta.field_name,
-        meta.element_label as field_label,
+        logs.event_id,
+        c.descrip as event_name,
+        d.arm_num,
+        d.arm_name,
+        logs.instance,
+        b.form_name,
+        logs.field_name,
+        b.element_label as field_label,
         logs.field_value as value,
         logs.change_reason,
         logs.description,
         left(logs.sql_log, 6) as query_type,
-        meta.element_type
+        b.element_type
     from
         rh_logs as logs
-        inner join
-         (
-            select
-                event_id,
-                event_name,
-                arm_name,
-                arm_num,
-                field_name,
-                GROUP_CONCAT(value SEPARATOR "|") as value,
-                instance,
-                form_name,
-                field_order,
-                element_type,
-                element_label,
-                record
-            from
-                (select
-                    a.event_id,
-                    c.descrip as event_name,
-                    d.arm_name,
-                    d.arm_num,
-                    a.field_name,
-                    a.value,
-                    a.instance,
-                    b.form_name,
-                    b.field_order,
-                    b.element_type,
-                    b.element_label,
-                    a.record
-                from
-                    redcap.', dataTable, ' a
-                    inner join redcap.redcap_metadata b
-                    on
-                    a.project_id = b.project_id
-                    and a.field_name = b.field_name
-                    inner join redcap.redcap_events_metadata c
-                    on
-                    a.event_id = c.event_id
-                    inner join redcap.redcap_events_arms d
-                    on
-                    c.arm_id = d.arm_id
-                where
-                    a.project_id = ?
-                ) as inner_meta
-            group by
-                event_id,
-                event_name,
-                arm_name,
-                arm_num,
-                field_name,
-                instance,
-                form_name,
-                field_order,
-                element_type,
-                element_label,
-                record
-            ) as meta
-        on logs.pk = meta.record
-        and logs.event_id = meta.event_id
-        and logs.field_name = meta.field_name
-        and ((logs.instance = 0 and meta.instance is null)
-                or (logs.instance = meta.instance))
+        inner join redcap.redcap_metadata b
+		on
+            b.project_id = ?
+			and logs.field_name = b.field_name
+		inner join redcap.redcap_events_metadata c
+		on
+			logs.event_id = c.event_id
+		inner join redcap.redcap_events_arms d
+		on
+			c.arm_id = d.arm_id
     where
         -- always remove fields matching the regex of excludeFieldNameRegex
         (? is null or logs.field_name not rlike ?)
 
         -- eventId
-        and (? is null or meta.event_id = ?)
+        and (? is null or c.event_id = ?)
         -- groupId
         and (? is null or logs.group_id = ? or (? = -1 and logs.group_id is null))
         -- arm num
-        and (? is null or meta.arm_num = ?)
+        and (? is null or d.arm_num = ?)
         -- logDescription
         and (? is null or logs.description = ?)
         -- changeReason
@@ -504,14 +424,14 @@ begin
         -- logUser
         and (? is null or logs.user = ?)
         -- formName
-        and (? is null or meta.form_name = ?)
+        and (? is null or b.form_name = ?)
         -- instance
-        and (? is null or meta.instance = ? or (? = -1 and meta.instance is null))
+        and (? is null or logs.instance = ? or (? = -1 and logs.instance is null))
         -- field name or label
         and (? is null
-            or (meta.field_name like concat(''%'', ?, ''%'') or meta.element_label like concat(''%'', ?, ''%'')))
+            or (logs.field_name like concat(''%'', ?, ''%'') or b.element_label like concat(''%'', ?, ''%'')))
         -- value
-        and (? is null or meta.value like concat(''%'', ?, ''%''))
+        and (? is null or logs.field_value like concat(''%'', ?, ''%''))
 
     order by
         -- this should preserve the timestamp order applied to logs earlier

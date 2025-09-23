@@ -6,7 +6,7 @@ filter changes made to a form or field level.
 
 This module simply accesses logs creating by the vanilla system and interrogates the log records sql statements. If 
 there are no logs (for instance in a project that has been imported from xml with data), the module will be of limited
-use.
+use. The module shows records for the user's current DAG only and does not support users assigned to multiple DAGs.
 
 #### System set up ####
 
@@ -60,4 +60,3 @@ The following project level settings are available;
 - amend stored procedure when filtering for values that have a text input and use a 'like' expression, and use a regex
   with 'rlike' in the stored procedure to make the filtering more flexible. This is an advanced option so users should
   still be able to use the basic filtering when required
-- include csv export options

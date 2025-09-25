@@ -24,13 +24,6 @@ class Utility {
         return $urlMatches[0];
     }
 
-    public static function getREDCapUrlPart() : string
-    {
-        $fullUrl = self::getBaseUrl();
-        preg_match("/\/redcap_v\d+.\d+.\d+/", $fullUrl, $matches);
-        return $matches[0];
-    }
-
     public static function MakeFormLink($baseUrl, $projectId, $recordId, $eventId, $formName, $fldName, $instance, $val): string
     {
         if($instance !== null)

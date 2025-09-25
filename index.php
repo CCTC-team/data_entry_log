@@ -30,8 +30,6 @@ $noArm = "-- no arm --";
 //$noInstance = "-- no instance --";
 $noInstance = "1";
 
-$redcapPart = Utility::getREDCapUrlPart();
-
 //gets the users preferred data format which is used as data attribute on the datetimepicker field
 global $datetime_format;
 
@@ -404,15 +402,15 @@ echo "
             <button class='clear-button' style='margin-left: 10px' type='button' onclick='resetForm()'><i class='fas fa-broom'></i> reset</button>
             <div class='ms-auto'>            
                 <button class='jqbuttonmed ui-button ui-corner-all ui-widget' type='button' onclick='cleanUpParamsAndRun(\"$moduleName\", \"$projId\", \"current_page\")'>
-                    <img src='$redcapPart/Resources/images/xls.gif' style='position: relative;top: -1px;' alt=''>
+                    <img src='" . APP_PATH_WEBROOT . "/Resources/images/xls.gif' style='position: relative;top: -1px;' alt=''>
                     Export current page
                 </button>
                 <button class='jqbuttonmed ui-button ui-corner-all ui-widget' type='button' onclick='cleanUpParamsAndRun(\"$moduleName\", \"$projId\", \"all_pages\")'>
-                    <img src='$redcapPart/Resources/images/xls.gif' style='position: relative;top: -1px;' alt=''>
+                    <img src='" . APP_PATH_WEBROOT . "/Resources/images/xls.gif' style='position: relative;top: -1px;' alt=''>
                     Export all pages
                 </button>
                 <button class='jqbuttonmed ui-button ui-corner-all ui-widget' type='button' onclick='cleanUpParamsAndRun(\"$moduleName\", \"$projId\", \"everything\")'>
-                    <img src='$redcapPart/Resources/images/xls.gif' style='position: relative;top: -1px;' alt=''>
+                    <img src='" . APP_PATH_WEBROOT . "/Resources/images/xls.gif' style='position: relative;top: -1px;' alt=''>
                     Export everything ignoring filters
                 </button>                                    
             </div>                               

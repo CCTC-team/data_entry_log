@@ -12,7 +12,14 @@ $oneWeekAgo = Utility::NowAdjusted('-7 days');
 $oneMonthAgo = Utility::NowAdjusted('-1 months');
 $oneYearAgo = Utility::NowAdjusted('-1 years');
 
-$userDateFormat = DateTimeRC::get_user_format_jquery();
+global $datetime_format;
+
+$userDateFormat = str_replace('y', 'Y', strtolower($datetime_format));
+if(ends_with($datetime_format, "_24")){
+    $userDateFormat = str_replace('_24', ' H:i', $userDateFormat);
+} else {
+    $userDateFormat = str_replace('_12', ' H:i a', $userDateFormat);
+}
 
 //get form values
 $recordId = "";

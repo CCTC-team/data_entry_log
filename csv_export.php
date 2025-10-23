@@ -124,7 +124,7 @@ if ($fp && $result)
             $row["ts"] =
                 $dc->timestamp == null || $dc->timestamp == ""
                     ? ""
-                    : DateTime::createFromFormat('YmdHis', $dc->timestamp)->format($userDateFormat);
+                    : DateTime::createFromFormat('YmdHis', $dc->timestamp)->format('Y-m-d H:i:s');
 
             //add rest of columns
             $row["user name"] = $dc->editor;

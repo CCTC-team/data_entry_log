@@ -12,8 +12,6 @@ $oneWeekAgo = Utility::NowAdjusted('-7 days');
 $oneMonthAgo = Utility::NowAdjusted('-1 months');
 $oneYearAgo = Utility::NowAdjusted('-1 years');
 
-$userDateFormat = DateTimeRC::get_user_format_jquery();
-
 //get form values
 $recordId = "";
 if (isset($_GET['record_id'])) {

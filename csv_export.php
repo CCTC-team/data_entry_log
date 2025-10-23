@@ -4,7 +4,7 @@ require_once APP_PATH_DOCROOT . "/Config/init_project.php";
 $lang = Language::getLanguage('English');
 
 global $Proj;
-$project_id = $Proj->id;
+$project_id = $module->getProjectId();
 global $module;
 $modName = $module->getModuleDirectoryName();
 

@@ -15,25 +15,25 @@ Feature: E.127.2400 - RepeatingInstruments_SingleArm_withDAGs
 
     Given I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Module Manager"
-    And I should NOT see "Data Entry Log - v0.0.0"
+    And I should NOT see "Data Entry Log - v1.0.0"
     When I click on the button labeled "Enable a module"
     And I click on the button labeled Enable for the external module named "Data Entry Log"
     And I click on the button labeled "Enable" in the dialog box
-    Then I should see "Data Entry Log - v0.0.0"
+    Then I should see "Data Entry Log - v1.0.0"
  
   Scenario: Enable external module in project
     Given I create a new project named "E.127.2400" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "redcap_val/ProjectTypes/RepeatingInstruments_SingleArm_withDAGs.xml", and clicking the "Create Project" button
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled Enable for the external module named "Data Entry Log - v0.0.0"
-    Then I should see "Data Entry Log - v0.0.0"
+    And I click on the button labeled Enable for the external module named "Data Entry Log - v1.0.0"
+    Then I should see "Data Entry Log - v1.0.0"
 
     When I click on the button labeled exactly "Configure"
     Then I should see "Configure Module"
     When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried" in the dialog box
     And I click on the button labeled "Save" in the dialog box
-    Then I should see "Data Entry Log - v0.0.0"
+    Then I should see "Data Entry Log - v1.0.0"
 
     # Add User Test_User1 with 'Project Setup & Design' rights
     Given I click on the link labeled "User Rights"
@@ -192,11 +192,11 @@ Feature: E.127.2400 - RepeatingInstruments_SingleArm_withDAGs
     And I click on the link labeled "E.127.2400"
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
-    And I should see "Data Entry Log - v0.0.0"
+    And I should see "Data Entry Log - v1.0.0"
     When I click on the button labeled exactly "Disable"
     Then I should see "Disable module?" in the dialog box
     When I click on the button labeled "Disable module" in the dialog box
-    Then I should NOT see "Data Entry Log - v0.0.0"
+    Then I should NOT see "Data Entry Log - v1.0.0"
 
     # Disable external module in Control Center
     Given I click on the link labeled "Control Center"
@@ -204,7 +204,7 @@ Feature: E.127.2400 - RepeatingInstruments_SingleArm_withDAGs
     And I click on the button labeled exactly "Disable"
     Then I should see "Disable module?" in the dialog box
     When I click on the button labeled "Disable module" in the dialog box
-    Then I should NOT see "Data Entry Log - v0.0.0"
+    Then I should NOT see "Data Entry Log - v1.0.0"
     And I logout
 
     # Verify no exceptions are thrown in the system

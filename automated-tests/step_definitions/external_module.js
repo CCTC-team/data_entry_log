@@ -8,6 +8,19 @@ defineParameterType({
 })
 
 
+defineParameterType({
+    name: 'emTableName',
+    regexp: /monitoring logging|data entry log|system changes|project changes|user role changes/
+})
+
+emTableName = {
+    'monitoring logging' : '#monitor-query-data-log',
+    'data entry log' : '#log-data-entry-event',
+    'system changes' : '#system_changes_table',
+    'project changes' : '#project_changes_table',
+    'user role changes' : '#user_role_changes_table',
+}
+
 /**
  * @module ExternalModule
  * @author Mintoo Xavier <min2xavier@gmail.com>
@@ -90,13 +103,24 @@ Given('I (should )see the {string} request created for the project named {string
 /**
  * @module DataEntryLog
  * @author Mintoo Xavier <min2xavier@gmail.com>
- * @example I should see {int} row(s) in the data entry log table
+ * @example I should see {int} row(s) in the {emTableName} table
  * @param {int} num - number of row(s)
- * @description verifies data entry log table contains the specified number of row(s)
+ * @param {string} emTableName - available options: 'monitoring logging', 'data entry log', 'system changes', 'project changes', 'user role changes'
+ * @description verifies the table contains the specified number of row(s)
  */
-Given('I should see {int} row(s) in the data entry log table', (num) => {
-    cy.get('#log-data-entry-event tbody tr').its('length').then ((rowCount) => {
+Given('I should see {int} row(s) in the {emTableName} table', (num, tableName) => {
+    element = emTableName[tableName] + ' tbody tr'
+    cy.get(element).its('length').then ((rowCount) => {
         // Subtracting 1 for header
-        expect(rowCount-1).to.be.equal(num)
+        if (tableName === 'data entry log') {
+            rowCount = rowCount-1
+        }
+
+        if (tableName === 'monitoring logging') {
+             // Subtracting 1 for header and dividing by 2 as each entry has 2 rows
+            rowCount = (rowCount-1)/2
+        }
+
+        expect(rowCount).to.be.equal(num)
     })
 })

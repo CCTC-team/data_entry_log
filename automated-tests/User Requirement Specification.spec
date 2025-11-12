@@ -27,3 +27,4 @@ E.127.2600 – The system shall support the integration of the Data Entry Log ex
 E.127.2700 – The system shall support the integration of the Data Entry Log external module for Non-longitudinal projects utilizing Repeating Instruments and without DAGs.
 E.127.2800 – The system shall support the integration of the Data Entry Log external module for Non-longitudinal projects utilizing Non-repeating Instruments and with DAGs.
 E.127.2900 – The system shall support the integration of the Data Entry Log external module for Non-longitudinal projects utilizing Non-repeating Instruments and without DAGs.
+E.127.3000 - The system shall support the ability to configure 'Module configuration permissions in projects' for Data Entry Log external module.

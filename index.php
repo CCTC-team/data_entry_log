@@ -467,7 +467,7 @@ echo "{$table}";
         margin-top: 1px;
     }
 
-    #log-data-entry-event td {
+    #data-entry-log-table td {
         border-width:1px;
         text-align:left;
         padding:2px 4px 2px 4px;

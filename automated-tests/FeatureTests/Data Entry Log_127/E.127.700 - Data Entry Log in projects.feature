@@ -132,7 +132,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | text_validation | email_v2 [Email]	                      | testuser1@abc.com	| Create record |
       |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | text_validation | text_validation_complete [Complete?]    | 0                 | Create record |
 
-    And I should see 3 rows in the data entry log table
+    And I should see 3 rows in a table
 
     # Repeating Instruments - Instance 1
     Given I click on the link labeled "Add / Edit Records"
@@ -186,7 +186,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | text_validation | email_v2 [Email]	                                     | testuser1@abc.com | Create record |
       | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | text_validation | text_validation_complete [Complete?]                   | 0                 | Create record |
 
-    And I should see 17 rows in the data entry log table
+    And I should see 17 rows in a table
 
     # Download
     Given I select "Event 1 [40]" on the dropdown field labeled "Event"
@@ -254,7 +254,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | text_validation | email_v2 [Email]	                      | testuser1@abc.com | Create record |
       | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | text_validation | text_validation_complete [Complete?]    | 0                 | Create record |
    
-    And I should see 3 rows in the data entry log table
+    And I should see 3 rows in a table
     And I should NOT see "data_types"
 
     # Filter by form and field
@@ -264,7 +264,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | Username   | Record ID | Group | Event   | Arm   | Instance | Form            | Field and Label   | New Value         | Action        |
       | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | text_validation | email_v2 [Email]  | testuser1@abc.com | Create record |
 
-    And I should see 1 row in the data entry log table
+    And I should see 1 row in a table
     And I should NOT see "text_validation_crfver"
     And I should NOT see "text_validation_complete"
     And I should NOT see "data_types"
@@ -313,7 +313,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | text_validation | email_v2 [Email]	                                     | testuser1@abc.com | Create record |
       | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | text_validation | text_validation_complete [Complete?]                   | 0                 | Create record |
 
-    And I should see 20 rows in the data entry log table
+    And I should see 20 rows in a table
     And I logout
 
   Scenario: E.127.1200, E.127.1300 - Data Entry Log for Repeating Events in Arm 2
@@ -353,7 +353,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | ptname [Name]                             | User 2          | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_complete [Complete?]	         | 0               | Create record |
 
-    And I should see 8 rows in the data entry log table
+    And I should see 8 rows in a table
     And I should NOT see "test_user1"
     And I should NOT see "DAG1 [1]"
     And I should NOT see a link labeled exactly "Manage"
@@ -365,7 +365,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | ptname [Name]                             | User 2          | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_complete [Complete?]	         | 0               | Create record |
 
-    And I should see 3 rows in the data entry log table
+    And I should see 3 rows in a table
     And I should NOT see "Update record"
     And I logout
 
@@ -415,7 +415,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user1 | 1-1       | DAG1 [1]  | Event 2 [41] | Arm 1 [1]   |          | text_validation | text_validation_crfver [CRF Versioning]                | 1                 | Create record |
       | test_user1 | 1-1       | DAG1 [1]  | Event 2 [41] | Arm 1 [1]   |          | text_validation | email_v2 [Email]	                                      | testuser1@abc.com | Create record |
 
-    And I should see 22 rows in the data entry log table
+    And I should see 22 rows in a table
 
     When I select "test_user2" on the dropdown field labeled "Username"
     Then I should see a table header and rows containing the following values in the a table:
@@ -427,7 +427,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user2 | 2-1       | DAG2 [2]  | Event 1 [43] | Arm Two [2] | 1        | data_types | data_types_crfver [CRF Versioning]        | 1               | Create record |
       | test_user2 | 2-1       | DAG2 [2]  | Event 1 [43] | Arm Two [2] | 1        | data_types | ptname [Name]                             | User 2          | Create record |
     
-    And I should see 6 rows in the data entry log table
+    And I should see 6 rows in a table
 
     #VERIFY E.127.900
     When I click on the button labeled "Past year"
@@ -445,7 +445,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user2 | 2-1       | DAG2 [2]  | Event 1 [43] | Arm Two [2] | 2        | data_types | radio_button_manual [Radio Button Manual] | 9..9            | Update record |
       | test_user2 | 2-1       | DAG2 [2]  | Event 1 [43] | Arm Two [2] | 2        | data_types | required [Required]                       | 2001            | Update record |
 
-    And I should see 4 rows in the data entry log table
+    And I should see 4 rows in a table
     And I should NOT see "Arm 1"
     And I should NOT see "Event 1 [40]"
     And I should NOT see "Event 2 [41]"

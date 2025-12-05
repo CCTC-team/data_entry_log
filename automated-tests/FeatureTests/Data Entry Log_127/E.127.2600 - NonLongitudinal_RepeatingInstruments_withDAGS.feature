@@ -97,7 +97,7 @@ Feature: E.127.2600 - NonLongitudinal_RepeatingInstruments_withDAGS
       |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  |          | data_types | ptname [Name]	                      | User1           	| Create record |
       |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  |          | data_types | data_types_complete [Complete?]      | 0                 | Create record |
 
-    And I should see 3 rows in the data entry log table
+    And I should see 3 rows in a table
 
     # Repeating Instruments - Instance 2
     Given I click on the link labeled "Record Status Dashboard"
@@ -135,7 +135,7 @@ Feature: E.127.2600 - NonLongitudinal_RepeatingInstruments_withDAGS
       | test_user1 | 1-1       | DAG1  |          | data_types      | ptname [Name]	                            | User1           	| Create record |
       | test_user1 | 1-1       | DAG1  |          | data_types      | data_types_complete [Complete?]           | 0                 | Create record |
  
-    And I should see 8 rows in the data entry log table
+    And I should see 8 rows in a table
     And I logout
 
   Scenario: E.127.1200, E.127.1300 - Data Entry Log for Repeating Instruments in DAG2
@@ -180,7 +180,7 @@ Feature: E.127.2600 - NonLongitudinal_RepeatingInstruments_withDAGS
       | test_user2 | 2-1       | DAG2  |          | data_types | data_types_crfver [CRF Versioning]   | 1                 | Create record |
       | test_user2 | 2-1       | DAG2  |          | data_types | data_types_complete [Complete?]      | 0                 | Create record |
 
-    And I should see 7 rows in the data entry log table
+    And I should see 7 rows in a table
     And I should NOT see "test_user1"
     And I should NOT see "DAG1"
     And I logout  

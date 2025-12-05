@@ -69,7 +69,7 @@ Feature: E.127.1700 - RepeatingEvents_SingleArm_noDAGs
       |  mm/dd/yyyy hh:mm | test_user1 | 1         |          | text_validation | email_v2 [Email]	                      | testuser1@abc.com	| Create record |
       |  mm/dd/yyyy hh:mm | test_user1 | 1         |          | text_validation | text_validation_complete [Complete?]    | 0                 | Create record |
 
-    And I should see 3 rows in the data entry log table
+    And I should see 3 rows in a table
 
     # Repeating Events Arm 1 - Instance 2
     Given I click on the link labeled "Record Status Dashboard"
@@ -109,7 +109,7 @@ Feature: E.127.1700 - RepeatingEvents_SingleArm_noDAGs
       | test_user1 | 1         |          | text_validation | email_v2 [Email]	                                     | testuser1@abc.com | Create record |
       | test_user1 | 1         |          | text_validation | text_validation_complete [Complete?]                   | 0                 | Create record |
     
-    And I should see 8 rows in the data entry log table
+    And I should see 8 rows in a table
     And I logout
 
   Scenario: E.127.100 - Disable external module

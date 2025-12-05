@@ -69,7 +69,7 @@ Feature: E.127.2700 - NonLongitudinal_RepeatingInstruments_noDAGS
       |  mm/dd/yyyy hh:mm | test_user1 | 1         |          | data_types | ptname [Name]	                      | User1           	| Create record |
       |  mm/dd/yyyy hh:mm | test_user1 | 1         |          | data_types | data_types_complete [Complete?]      | 0                 | Create record |
 
-    And I should see 3 rows in the data entry log table
+    And I should see 3 rows in a table
 
     # Repeating Instruments - Instance 2
     Given I click on the link labeled "Record Status Dashboard"
@@ -107,7 +107,7 @@ Feature: E.127.2700 - NonLongitudinal_RepeatingInstruments_noDAGS
       | test_user1 | 1         |          | data_types      | ptname [Name]	                            | User1           	| Create record |
       | test_user1 | 1         |          | data_types      | data_types_complete [Complete?]           | 0                 | Create record |
  
-    And I should see 8 rows in the data entry log table
+    And I should see 8 rows in a table
     And I logout
    
   Scenario: E.127.100 - Disable external module

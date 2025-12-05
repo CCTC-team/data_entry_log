@@ -96,7 +96,7 @@ Feature: E.127.2000 - NonRepeating_SingleArm_withDAGs
       |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  |          | text_validation | email_v2 [Email]	                      | testuser1@abc.com	| Create record |
       |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  |          | text_validation | text_validation_complete [Complete?]    | 0                 | Create record |
 
-    And I should see 3 rows in the data entry log table
+    And I should see 3 rows in a table
 
     Given I click on the link labeled "Record Status Dashboard"
     And I click on the link labeled "1-1"
@@ -118,7 +118,7 @@ Feature: E.127.2000 - NonRepeating_SingleArm_withDAGs
       | test_user1 | 1-1       | DAG1  | Event 1 |          | text_validation | email_v2 [Email]	                                     | testuser1@abc.com | Create record |
       | test_user1 | 1-1       | DAG1  | Event 1 |          | text_validation | text_validation_complete [Complete?]                   | 0                 | Create record |
     
-    And I should see 5 rows in the data entry log table
+    And I should see 5 rows in a table
     And I logout
 
   Scenario: E.127.1200, E.127.1300 - Data Entry Log for Arm 1 DAG2
@@ -152,7 +152,7 @@ Feature: E.127.2000 - NonRepeating_SingleArm_withDAGs
       | test_user2 | 2-1       | DAG2  | Event 1 |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 |          | data_types      | checkbox [Checkbox]                       | item[3] checked   | Create record |
 
-    And I should see 6 rows in the data entry log table
+    And I should see 6 rows in a table
     And I should NOT see "test_user1"
     And I should NOT see "DAG1"
     And I logout

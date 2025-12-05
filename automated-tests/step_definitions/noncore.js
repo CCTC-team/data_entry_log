@@ -1679,3 +1679,15 @@ Cypress.Commands.add('get_record_status_dashboard_nonlongitudinal', (instrument,
 Given("I locate the bubble for the {string} instrument for record ID {string}{cellAction}", (instrument, record_id, cell_action) => {
     cy.get_record_status_dashboard_nonlongitudinal(instrument, record_id, cell_action)
 })
+
+
+/**
+ * @module Visibility
+ * @author Mintoo Xavier <min2xavier@gmail.com>
+ * @example I should see {int} row(s) in a table
+ * @param {int} num - number of row(s)
+ * @description verifies a table contains the specified number of row(s)
+ */
+Given('I should see {int} row(s) in a table', (num) => {
+ cy.get('table[id*="-table"]').find('tbody tr:visible').should('have.length', num)
+})

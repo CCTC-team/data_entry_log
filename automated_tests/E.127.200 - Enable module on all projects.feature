@@ -1,9 +1,9 @@
-Feature: E.127.400 - The system shall support the ability to allow non-admins to enable Data Entry Log external module on projects.
+Feature: E.127.200 - The system shall support the ability to enable Data Entry Log external module on all projects by default.
 
   As a REDCap end user
   I want to see that Data Entry Log is functioning as expected
 
-Scenario: E.127.400 - Allow non-admins to enable this module on projects
+Scenario: E.127.200 - Enable module on all projects by default
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "Control Center"
     When I click on the link labeled exactly "Manage"
@@ -13,24 +13,21 @@ Scenario: E.127.400 - Allow non-admins to enable this module on projects
     And I click on the button labeled Enable for the external module named "Data Entry Log"
     And I click on the button labeled "Enable" in the dialog box
     Then I should see "Data Entry Log - v1.0.0"
+    And I should NOT see "Enabled for All Projects"
     
     When I click on the button labeled exactly "Configure"
-    And I check the checkbox labeled "Allow non-admins to enable this module on projects"
-    And I check the checkbox labeled "Make module discoverable by users"
+    And I check the checkbox labeled "Enable module on all projects by default"
     And I click on the button labeled "Save"
     Then I should see "Data Entry Log - v1.0.0"
-    And I logout  
-
+    And I should see "Enabled for All Projects"
+    And I logout
+    
     Given I login to REDCap with the user "Test_User1"
-    When I create a new project named "E.127.400" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "redcap_val/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
+    When I create a new project named "E.127.200" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
-    And I should NOT see "Data Entry Log - v1.0.0"
-
-    When I click on the button labeled "View available modules"
-    Then I should see "Data Entry Log - v1.0.0"
-    And I click on the button labeled Enable for the external module named "Data Entry Log - v1.0.0"
-    Then I should see "Data Entry Log - v1.0.0"
+    And I should see "Data Entry Log - v1.0.0"
+    And I should see "Enabled for All Projects"
     And I logout
 
     # Disable external module in Control Center

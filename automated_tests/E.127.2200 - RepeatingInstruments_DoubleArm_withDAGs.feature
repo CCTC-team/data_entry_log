@@ -1,4 +1,4 @@
-Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
+Feature: E.127.2200 - RepeatingInstruments_DoubleArm_withDAGs
   
   As a REDCap end user
   I want to see that Data Entry Log External Module work as expected
@@ -22,7 +22,7 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     Then I should see "Data Entry Log - v1.0.0"
  
   Scenario: Enable external module in project
-    Given I create a new project named "E.127.1600" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "redcap_val/ProjectTypes/RepeatingEvents_SingleArm_withDAGS.xml", and clicking the "Create Project" button
+    Given I create a new project named "E.127.2200" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/ProjectTypes/RepeatingInstruments_DoubleArm_withDAGs.xml", and clicking the "Create Project" button
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
@@ -74,48 +74,46 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
 
     And I logout
 
-  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Repeating Events in Arm 1 DAG1
+  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Repeating Instruments in Arm 1 DAG1
     Given I login to REDCap with the user "Test_User1"
     When I click on the link labeled "My Projects"
-    And I click on the link labeled "E.127.1600"
+    And I click on the link labeled "E.127.2200"
     When I click on the link labeled "Data Entry Log"
     Then I should see "No log entries found"
 
-    # Repeating Events Arm 1- Instance 1
+    # Repeating Instruments Arm 1- Instance 1
     Given I click on the link labeled "Add / Edit Records"
-    When I click on the button labeled "Add new record"
-    And I click the bubble to add a record for the "Text Validation" longitudinal instrument on event "Event 1"
+    When I click on the button labeled "Add new record for the arm selected above"
+    And I click the bubble to add a record for the "Data Types" longitudinal instrument on event "Event 1"
     Then I enter "1" into the data entry form field labeled "CRF Versioning"
-    Then I enter "testuser1@abc.com" into the data entry form field labeled "Email"
+    Then I enter "User1" into the data entry form field labeled "Name"
     And I click on the button labeled "Save & Exit Form"
     Then I should see "Record Home Page"
 
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
-      |  Date / Time      | Username   | Record ID | Group | Instance | Form            | Field and Label                         | New Value         | Action        |
-      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  |          | text_validation | text_validation_crfver [CRF Versioning] | 1                 | Create record |
-      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  |          | text_validation | email_v2 [Email]	                      | testuser1@abc.com	| Create record |
-      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  |          | text_validation | text_validation_complete [Complete?]    | 0                 | Create record |
+      |  Date / Time      | Username   | Record ID | Group | Arm   | Instance | Form       | Field and Label                      | New Value         | Action        |
+      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | data_types | data_types_crfver [CRF Versioning]   | 1                 | Create record |
+      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | data_types | ptname [Name]	                      | User1           	| Create record |
+      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | data_types | data_types_complete [Complete?]      | 0                 | Create record |
 
     And I should see 3 rows in the data entry log table
 
-    # Repeating Events Arm 1 - Instance 2
+    # Repeating Instruments Arm 1 - Instance 2
     Given I click on the link labeled "Record Status Dashboard"
     And I click on the link labeled "1-1"
     Then I should see "Record Home Page"
     And I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(#2)"
     Then I should see "Editing existing Record ID 1-1"
     And I should see "Data Types"
     And I should see "(Instance #2)"
-    When I select "Choice99" on the radio field labeled "Radio Button Manual"
+    Then I select "Choice99" on the radio field labeled "Radio Button Manual"
     Then I select "Complete" on the dropdown field labeled "Complete?"
     And I click on the button labeled "Save & Exit Form"
     Then I should see "Record Home Page"
 
-    # Repeating Events Arm 1 - Instance 3
+    # Repeating Instruments Arm 1 - Instance 3
     Given I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(#3)"
     Then I should see "Editing existing Record ID 1-1"
     And I should see "Data Types"
     And I should see "(Instance #3)"
@@ -127,46 +125,44 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
 
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
-      | Username   | Record ID | Group | Instance | Form            | Field and Label                                        | New Value         | Action        |
-      | test_user1 | 1-1       | DAG1  | 3        | data_types	    | notesbox [Notes Box]	                                 | Notes             | Update record |
-      | test_user1 | 1-1       | DAG1  | 3        | data_types	    | file_upload [File Upload]                              | 2                 | Update record |
-      | test_user1 | 1-1       | DAG1  | 3        | data_types	    | data_types_complete [Complete?]	                       | 0                 | Update record |
-      | test_user1 | 1-1       | DAG1  | 2        | data_types	    | radio_button_manual [Radio Button Manual]              | 9..9              | Update record |
-      | test_user1 | 1-1       | DAG1  | 2        | data_types	    | data_types_complete [Complete?]	                       | 2                 | Update record |
-      | test_user1 | 1-1       | DAG1  |          | text_validation | text_validation_crfver [CRF Versioning]                | 1                 | Create record |
-      | test_user1 | 1-1       | DAG1  |          | text_validation | email_v2 [Email]	                                     | testuser1@abc.com | Create record |
-      | test_user1 | 1-1       | DAG1  |          | text_validation | text_validation_complete [Complete?]                   | 0                 | Create record |
-    
+      | Username   | Record ID | Group | Arm   | Instance | Form            | Field and Label                           | New Value         | Action        |
+      | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | notesbox [Notes Box]	                    | Notes             | Update record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | file_upload [File Upload]                 | 2                 | Update record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | data_types_complete [Complete?]	          | 0                 | Update record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 | 2        | data_types	    | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 | 2        | data_types	    | data_types_complete [Complete?]	          | 2                 | Update record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 |          | data_types      | data_types_crfver [CRF Versioning]        | 1                 | Create record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 |          | data_types      | ptname [Name]	                            | User1           	| Create record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 |          | data_types      | data_types_complete [Complete?]           | 0                 | Create record |
+ 
     And I should see 8 rows in the data entry log table
     And I logout
 
-  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Repeating Events in Arm 1 DAG2
+  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Repeating Instruments in Arm 2 DAG2
     Given I login to REDCap with the user "Test_User2"
     When I click on the link labeled "My Projects"
-    And I click on the link labeled "E.127.1600"
-    # Repeating Events Arm 1 - Instance 1
+    And I click on the link labeled "E.127.2200"
+    # Repeating Instruments Arm 2 - Instance 1
     Given I click on the link labeled "Record Status Dashboard"
-    And I click on the button labeled "Add new record"
-    And I click the bubble to add a record for the "Data Types" longitudinal instrument on event "Event 1"
+    And I click on the tab labeled "Arm 2"
+    And I click on the button labeled "Add new record for this arm"
+    And I click the bubble to add a record for the "Text Validation" longitudinal instrument on event "Event 1"
     Then I should see "Adding new Record ID 2-1"
-    And I should see "Data Types"
-    When I enter "User 2" into the data entry form field labeled "Name"
-    And I check the checkbox labeled "Checkbox3"
-    Then I click on the button labeled "Save & Exit Form"
+    And I should see "Text Validation"
+    Then I enter "1" into the data entry form field labeled "CRF Versioning"
+    And I click on the button labeled "Save & Exit Form"
     Then I should see "Record Home Page"
 
-    # Repeating Events Arm 1 - Instance 2
+    # Repeating Instruments Arm 2 - Instance 2
     Given I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(#2)"
     Then I should see "Editing existing Record ID 2-1"
-    And I should see "Data Types"
+    And I should see "Text Validation"
     And I should see "(Instance #2)"
-    When I select "Choice99" on the radio field labeled "Radio Button Manual"
+    When I enter "testuser1@abc.com" into the data entry form field labeled "Email"
     Then I click on the button labeled "Save & Exit Form"
 
-    # Repeating Events Arm 1 - Instance 3
+    # Repeating Instruments Arm 2 - Instance 3
     Given I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Text Validation" longitudinal instrument on event "(#3)"
     Then I should see "Editing existing Record ID 2-1"
     And I should see "Text Validation"
     And I should see "(Instance #3)"
@@ -176,17 +172,16 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
 
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
-      | Username   | Record ID | Group | Instance | Form            | Field and Label                           | New Value         | Action        |
-      | test_user2 | 2-1       | DAG2  | 3        | text_validation | text_validation_crfver [CRF Versioning]   | 2                 | Update record |
-      | test_user2 | 2-1       | DAG2  | 3        | text_validation | email_v2 [Email]	                        | testuser2@abc.com | Update record |
-      | test_user2 | 2-1       | DAG2  | 3        | text_validation | text_validation_complete [Complete?]      | 0                 | Update record |
-      | test_user2 | 2-1       | DAG2  | 2        | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
-      | test_user2 | 2-1       | DAG2  | 2        | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
-      | test_user2 | 2-1       | DAG2  |          | data_types      | ptname [Name]                             | User 2            | Create record |
-      | test_user2 | 2-1       | DAG2  |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
-      | test_user2 | 2-1       | DAG2  |          | data_types      | checkbox [Checkbox]                       | item[3] checked   | Create record |
+      | Username   | Record ID | Group | Event   | Arm     | Instance | Form            | Field and Label                           | New Value         | Action        |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 3        | text_validation | text_validation_crfver [CRF Versioning]   | 2                 | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 3        | text_validation | email_v2 [Email]	                        | testuser2@abc.com | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 3        | text_validation | text_validation_complete [Complete?]      | 0                 | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | text_validation | email_v2 [Email]	                        | testuser1@abc.com | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | text_validation | text_validation_complete [Complete?]      | 0                 | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | text_validation | text_validation_crfver [CRF Versioning]   | 1                 | Create record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | text_validation | text_validation_complete [Complete?]      | 0                 | Create record |
 
-    And I should see 8 rows in the data entry log table
+    And I should see 7 rows in the data entry log table
     And I should NOT see "test_user1"
     And I should NOT see "DAG1"
     And I logout  
@@ -195,7 +190,7 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     # Disable external module in project
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
-    And I click on the link labeled "E.127.1600"
+    And I click on the link labeled "E.127.2200"
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.0.0"

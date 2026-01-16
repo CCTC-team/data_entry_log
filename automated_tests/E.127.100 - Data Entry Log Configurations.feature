@@ -16,7 +16,7 @@ Feature: E.127.100 - The system shall support the ability to enable/disable Data
     And I logout
     
     Given I login to REDCap with the user "Test_User1"
-    When I create a new project named "E.127.100" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "redcap_val/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
+    When I create a new project named "E.127.100" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
     And I should NOT see a link labeled exactly "Manage"
     And I logout
 

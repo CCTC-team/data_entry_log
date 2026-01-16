@@ -22,7 +22,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     Then I should see "Data Entry Log - v1.0.0"
  
   Scenario: Enable external module in project
-    Given I create a new project named "E.127.700" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "redcap_val/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
+    Given I create a new project named "E.127.700" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"

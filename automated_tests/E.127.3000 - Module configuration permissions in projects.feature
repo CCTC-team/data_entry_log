@@ -19,7 +19,7 @@ Scenario: E.127.3000 - Module configuration permissions in projects
     And I click on the button labeled "Save"
     Then I should see "Data Entry Log - v1.0.0"
 
-    When I create a new project named "E.127.3000" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "redcap_val/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
+    When I create a new project named "E.127.3000" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
 
     # Enable external module
     And I click on the link labeled exactly "Manage"

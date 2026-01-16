@@ -1,4 +1,4 @@
-Feature: E.127.1800 - NonRepeating_DoubleArm_withDAGs
+Feature: E.127.1900 - NonRepeating_DoubleArm_noDAGs
   
   As a REDCap end user
   I want to see that Data Entry Log External Module work as expected
@@ -22,7 +22,9 @@ Feature: E.127.1800 - NonRepeating_DoubleArm_withDAGs
     Then I should see "Data Entry Log - v1.0.0"
  
   Scenario: Enable external module in project
-    Given I create a new project named "E.127.1800" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "redcap_val/ProjectTypes/NonRepeating_DoubleArm_withDAGs.xml", and clicking the "Create Project" button
+    Given I create a new project named "E.127.1900" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/ProjectTypes/NonRepeating_DoubleArm_noDAGs.xml", and clicking the "Create Project" button
+    When I click on the link labeled "DAGs"
+    Then I should NOT see "DAG1"
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
@@ -50,34 +52,12 @@ Feature: E.127.1800 - NonRepeating_DoubleArm_withDAGs
     And I check the User Right named "Logging"
     And I click on the button labeled "Add user"
     Then I should see "successfully added"
-     
-    # Assign Test_User1 to DAG1
-    Given I click on the link labeled "DAGs"
-    When I select "test_user1 (Test User1)" on the dropdown field labeled "Assign user"
-    And I select "DAG1" on the dropdown field labeled "to"
-    And I click on the button labeled "Assign"
-
-    Then I should see a table header and rows containing the following values in data access groups table:
-      | Data Access Groups | Users in group          |
-      | DAG1               | test_user1 (Test User1) |
-
-    # Assign Test_User2 to DAG2
-    Given I click on the link labeled "DAGs"
-    When I select "test_user2 (Test User2)" on the dropdown field labeled "Assign user"
-    And I select "DAG2" on the dropdown field labeled "to"
-    And I click on the button labeled "Assign"
-
-    Then I should see a table header and rows containing the following values in data access groups table:
-      | Data Access Groups | Users in group          |
-      | DAG1               | test_user1 (Test User1) |
-      | DAG2               | test_user2 (Test User2) |
-
     And I logout
 
-  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Arm 1 DAG1
+  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Arm 1
     Given I login to REDCap with the user "Test_User1"
     When I click on the link labeled "My Projects"
-    And I click on the link labeled "E.127.1800"
+    And I click on the link labeled "E.127.1900"
     When I click on the link labeled "Data Entry Log"
     Then I should see "No log entries found"
 
@@ -91,18 +71,18 @@ Feature: E.127.1800 - NonRepeating_DoubleArm_withDAGs
 
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
-      |  Date / Time      | Username   | Record ID | Group | Arm   | Instance | Form            | Field and Label                         | New Value         | Action        |
-      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | text_validation | text_validation_crfver [CRF Versioning] | 1                 | Create record |
-      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | text_validation | email_v2 [Email]	                      | testuser1@abc.com	| Create record |
-      |  mm/dd/yyyy hh:mm | test_user1 | 1-1       | DAG1  | Arm 1 |          | text_validation | text_validation_complete [Complete?]    | 0                 | Create record |
+      |  Date / Time      | Username   | Record ID | Arm   | Instance | Form            | Field and Label                         | New Value         | Action        |
+      |  mm/dd/yyyy hh:mm | test_user1 | 1         | Arm 1 |          | text_validation | text_validation_crfver [CRF Versioning] | 1                 | Create record |
+      |  mm/dd/yyyy hh:mm | test_user1 | 1         | Arm 1 |          | text_validation | email_v2 [Email]	                      | testuser1@abc.com	| Create record |
+      |  mm/dd/yyyy hh:mm | test_user1 | 1         | Arm 1 |          | text_validation | text_validation_complete [Complete?]    | 0                 | Create record |
 
     And I should see 3 rows in the data entry log table
 
     Given I click on the link labeled "Record Status Dashboard"
-    And I click on the link labeled "1-1"
+    And I click on the link labeled exactly "1"
     Then I should see "Record Home Page"
     When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "Event 2"
-    Then I should see "Editing existing Record ID 1-1"
+    Then I should see "Editing existing Record ID 1"
     And I should see "Data Types"
     Then I select "Choice99" on the radio field labeled "Radio Button Manual"
     Then I select "Complete" on the dropdown field labeled "Complete?"
@@ -111,25 +91,25 @@ Feature: E.127.1800 - NonRepeating_DoubleArm_withDAGs
 
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
-      | Username   | Record ID | Group | Event   | Arm   | Instance | Form            | Field and Label                                        | New Value         | Action        |
-      | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | data_types	    | radio_button_manual [Radio Button Manual]              | 9..9              | Update record |
-      | test_user1 | 1-1       | DAG1  | Event 2 | Arm 1 |          | data_types	    | data_types_complete [Complete?]	                       | 2                 | Update record |
-      | test_user1 | 1-1       | DAG1  | Event 1 | Arm 1 |          | text_validation | text_validation_crfver [CRF Versioning]                | 1                 | Create record |
-      | test_user1 | 1-1       | DAG1  | Event 1 | Arm 1 |          | text_validation | email_v2 [Email]	                                     | testuser1@abc.com | Create record |
-      | test_user1 | 1-1       | DAG1  | Event 1 | Arm 1 |          | text_validation | text_validation_complete [Complete?]                   | 0                 | Create record |
+      | Username   | Record ID | Event   | Arm   | Instance | Form            | Field and Label                                        | New Value         | Action        |
+      | test_user1 | 1         | Event 2 | Arm 1 |          | data_types	    | radio_button_manual [Radio Button Manual]              | 9..9              | Update record |
+      | test_user1 | 1         | Event 2 | Arm 1 |          | data_types	    | data_types_complete [Complete?]	                       | 2                 | Update record |
+      | test_user1 | 1         | Event 1 | Arm 1 |          | text_validation | text_validation_crfver [CRF Versioning]                | 1                 | Create record |
+      | test_user1 | 1         | Event 1 | Arm 1 |          | text_validation | email_v2 [Email]	                                     | testuser1@abc.com | Create record |
+      | test_user1 | 1         | Event 1 | Arm 1 |          | text_validation | text_validation_complete [Complete?]                   | 0                 | Create record |
     
     And I should see 5 rows in the data entry log table
     And I logout
 
-  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Arm 2 DAG2
+  Scenario: E.127.1200, E.127.1300 - Data Entry Log for Arm 2
     Given I login to REDCap with the user "Test_User2"
     When I click on the link labeled "My Projects"
-    And I click on the link labeled "E.127.1800"
+    And I click on the link labeled "E.127.1900"
     Given I click on the link labeled "Record Status Dashboard"
     And I click on the tab labeled "Arm 2"
     And I click on the button labeled "Add new record for this arm"
     And I click the bubble to add a record for the "Data Types" longitudinal instrument on event "Event 1"
-    Then I should see "Adding new Record ID 2-1"
+    Then I should see "Adding new Record ID 2"
     And I should see "Data Types"
     When I enter "User 2" into the data entry form field labeled "Name"
     And I check the checkbox labeled "Checkbox3"
@@ -137,32 +117,35 @@ Feature: E.127.1800 - NonRepeating_DoubleArm_withDAGs
     Then I should see "Record Home Page"
 
     Given I click the bubble to add a record for the "Data Types" longitudinal instrument on event "Event 2"
-    Then I should see "Editing existing Record ID 2-1"
+    Then I should see "Editing existing Record ID 2"
     And I should see "Data Types"
     When I select "Choice99" on the radio field labeled "Radio Button Manual"
-    And I clear field and enter "4" into the data entry form field labeled "CRF Versioning"
+    Then I enter "2" into the data entry form field labeled "CRF Versioning"
     Then I click on the button labeled "Save & Exit Form"
 
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
-      | Username   | Record ID | Group | Event   | Arm     | Instance | Form            | Field and Label                           | New Value         | Action        |
-      | test_user2 | 2-1       | DAG2  | Event 2 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
-      | test_user2 | 2-1       | DAG2  | Event 2 | Arm Two |          | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
-      | test_user2 | 2-1       | DAG2  | Event 2 | Arm Two |          | data_types      | data_types_crfver [CRF Versioning]        | 4                 | Update record |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types      | ptname [Name]                             | User 2            | Create record |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types      | checkbox [Checkbox]                       | item[3] checked   | Create record |
-
-    And I should see 6 rows in the data entry log table
-    And I should NOT see "test_user1"
-    And I should NOT see "DAG1"
+      | Username   | Record ID | Event   | Arm     | Instance | Form            | Field and Label                           | New Value         | Action        |
+      | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
+      | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
+      | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | data_types_crfver [CRF Versioning]        | 2                 | Update record |
+      | test_user2 | 2         | Event 1 | Arm Two |          | data_types      | ptname [Name]                             | User 2            | Create record |
+      | test_user2 | 2         | Event 1 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
+      | test_user2 | 2         | Event 1 | Arm Two |          | data_types      | checkbox [Checkbox]                       | item[3] checked   | Create record |
+      | test_user1 | 1         | Event 2 | Arm 1   |          | data_types	    | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
+      | test_user1 | 1         | Event 2 | Arm 1   |          | data_types	    | data_types_complete [Complete?]	          | 2                 | Update record |
+      | test_user1 | 1         | Event 1 | Arm 1   |          | text_validation | text_validation_crfver [CRF Versioning]   | 1                 | Create record |
+      | test_user1 | 1         | Event 1 | Arm 1   |          | text_validation | email_v2 [Email]	                        | testuser1@abc.com | Create record |
+      | test_user1 | 1         | Event 1 | Arm 1   |          | text_validation | text_validation_complete [Complete?]      | 0                 | Create record |
+    
+    And I should see 11 rows in the data entry log table
     And I logout  
    
   Scenario: E.127.100 - Disable external module
     # Disable external module in project
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
-    And I click on the link labeled "E.127.1800"
+    And I click on the link labeled "E.127.1900"
     And I click on the link labeled exactly "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.0.0"

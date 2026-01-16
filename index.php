@@ -289,7 +289,7 @@ $reasonChange = !$usesChangeReasons ? "<td/><td/>" :
             <div><button class='clear-button' type='button' onclick='clearFilter(\"changereason\")'><small><i class='fas fa-eraser'></i></small></button></div></div></td>";
 
 //create the reset to return to default original state
-$resetUrl = Utility::GetBaseUrl() . "/ExternalModules/?prefix=$moduleName&page=$page&pid=$projId";
+$resetUrl = APP_PATH_WEBROOT_FULL . "/ExternalModules/?prefix=$moduleName&page=$page&pid=$projId";
 $doReset = "window.location.href='$resetUrl';";
 
 echo "

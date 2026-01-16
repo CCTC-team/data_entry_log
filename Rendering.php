@@ -46,7 +46,7 @@ class Rendering {
         ($includeElementType ? "<td class='header' style='width:100px;'>element type</td>" : "") .
     "</tr>";
 
-        $baseUrl = Utility::getBaseUrl();
+        $baseUrl = APP_PATH_WEBROOT_FULL;
 
         //get display options
         $includeEventId = $module->getProjectSetting('display-event-id-with-event-name');

@@ -10,20 +10,6 @@ require_once APP_PATH_DOCROOT . "/Classes/DateTimeRC.php";
 
 class Utility {
 
-    public static function getBaseUrl() : string
-    {
-        global $module;
-
-        //returns something like https://localhost:8443/redcap_v13.8.1/ExternalModules/?prefix=log_helper&page=somepage&pid=22
-        $url = $module->getUrl("somepage.php");
-
-        //use regex to pull everything prior to the ExternalModules part
-        $basePat = "/https:\/\/.*(?=\/ExternalModules)/";
-        preg_match($basePat, $url, $urlMatches);
-
-        return $urlMatches[0];
-    }
-
     public static function MakeFormLink($baseUrl, $projectId, $recordId, $eventId, $formName, $fldName, $instance, $val): string
     {
         if($instance !== null)

@@ -340,7 +340,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
 
     # Repeating Events - Instance 2
     Given I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(#2)"
+    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 2-1"
     And I should see "Data Types"
     And I should see "(Instance #2)"

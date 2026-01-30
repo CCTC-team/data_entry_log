@@ -87,7 +87,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
     And I click on the link labeled "1"
     Then I should see "Record Home Page"
     And I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(#2)"
+    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 1"
     And I should see "Data Types"
     And I should see "(Instance #2)"
@@ -98,7 +98,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
 
     # Repeating Events Arm 1 - Instance 3
     Given I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(#3)"
+    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 1"
     And I should see "Data Types"
     And I should see "(Instance #3)"
@@ -141,7 +141,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
 
     # Repeating Events Arm 2 - Instance 2
     Given I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(#2)"
+    When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 2"
     And I should see "Data Types"
     And I should see "(Instance #2)"
@@ -150,7 +150,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
 
     # Repeating Events Arm 2 - Instance 3
     Given I click on the button labeled "Add new"
-    When I click the bubble to add a record for the "Text Validation" longitudinal instrument on event "(#3)"
+    When I click the bubble to add a record for the "Text Validation" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 2"
     And I should see "Text Validation"
     And I should see "(Instance #3)"

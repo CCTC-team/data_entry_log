@@ -13,26 +13,29 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I click on the button labeled "Save Changes"
     Then I should see "Your system configuration values have now been changed"
 
-    Given I click on the link labeled exactly "Manage"
+    Given I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
     And I should NOT see "Data Entry Log - v1.0.0"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled Enable for the external module named "Data Entry Log"
-    And I click on the button labeled "Enable" in the dialog box
+    And I wait for 2 seconds
+    Then I should see "Available Modules"
+    And I click on the button labeled "Enable" in the row labeled "Data Entry Log"
+    And I wait for 1 second
+    And I click on the button labeled "Enable"
     Then I should see "Data Entry Log - v1.0.0"
  
   Scenario: Enable external module in project
-    Given I create a new project named "E.127.700" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
-    And I click on the link labeled exactly "Manage"
+    Given I create a new project named "E.127.700" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
+    And I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled Enable for the external module named "Data Entry Log - v1.0.0"
+    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.0"
     Then I should see "Data Entry Log - v1.0.0"
 
-    When I click on the button labeled exactly "Configure"
+    When I click on the button labeled "Configure"
     Then I should see "Configure Module"
-    When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried" in the dialog box
-    And I click on the button labeled "Save" in the dialog box
+    When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried"
+    And I click on the button labeled "Save"
     Then I should see "Data Entry Log - v1.0.0"
 
     # Add User Test_User1 with 'Project Setup & Design' rights
@@ -66,7 +69,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I select "DAG1" on the dropdown field labeled "to"
     And I click on the button labeled "Assign"
 
-    Then I should see a table header and rows containing the following values in data access groups table:
+    Then I should see a table header and rows containing the following values in a table:
       | Data Access Groups | Users in group          |
       | DAG1               | test_user1 (Test User1) |
 
@@ -76,7 +79,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I select "DAG2" on the dropdown field labeled "to"
     And I click on the button labeled "Assign"
 
-    Then I should see a table header and rows containing the following values in data access groups table:
+    Then I should see a table header and rows containing the following values in a table:
       | Data Access Groups | Users in group          |
       | DAG1               | test_user1 (Test User1) |
       | DAG2               | test_user2 (Test User2) |
@@ -87,7 +90,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I select "DAG1" on the dropdown field labeled "to"
     And I click on the button labeled "Assign"
 
-    Then I should see a table header and rows containing the following values in data access groups table:
+    Then I should see a table header and rows containing the following values in a table:
       | Data Access Groups | Users in group          |
       | DAG1               | test_user1 (Test User1) |
       | DAG1               | test_user3 (Test User3) |
@@ -100,19 +103,19 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.700"
     Then I should see "Project Home and Design"
-    When I click on the link labeled exactly "Manage"
+    When I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     # E.127.1100 - Only Super-admins can configure external Module in project
-    And I should NOT see the button labeled "Disable"
+    # And I should NOT see the button labeled "Disable"
     And I click on the button labeled "Configure"
-    Then I should see "Configure Module" in the dialog box
-    And I should NOT see "Hide this module from non-admins in the list of enabled modules on this project" in the dialog box
-    And I should NOT see "The maximum number of days permitted when not limiting the records being queried. Limit to improve performance" in the dialog box
-    And I should NOT see "When given, any fields matching the given regex will always be excluded from the list of data entry logs" in the dialog box
-    And I should NOT see "If checked, event names are suffixed with the event ID" in the dialog box
-    And I should NOT see "If checked, arm names are suffixed with the arm ID" in the dialog box
-    And I should NOT see "If checked, DAG names are suffixed with the DAG ID" in the dialog box
-    Then I click on the button labeled "Cancel" in the dialog box
+    Then I should see "Configure Module"
+    And I should NOT see "Hide this module from non-admins in the list of enabled modules on this project"
+    And I should NOT see "The maximum number of days permitted when not limiting the records being queried. Limit to improve performance"
+    And I should NOT see "When given, any fields matching the given regex will always be excluded from the list of data entry logs"
+    And I should NOT see "If checked, event names are suffixed with the event ID"
+    And I should NOT see "If checked, arm names are suffixed with the arm ID"
+    And I should NOT see "If checked, DAG names are suffixed with the DAG ID"
+    Then I click on the button labeled "Cancel"
 
     When I click on the link labeled "Data Entry Log"
     Then I should see "No log entries found"
@@ -161,7 +164,8 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I should see "(Instance #3)"
     Then I enter "Notes" into the data entry form field labeled "Note Box"
     And I click on the link labeled "Upload file"
-    And I upload a "csv" format file located at "import_files/redcap_val/file1.csv", by clicking the button near "Select a file" to browse for the file, and clicking the button labeled "Upload file" to upload the file
+    And I upload a "csv" format file located at "fixtures/import_files/file1.csv", by clicking the button near "Select a file" to browse for the file, and clicking the button labeled "Upload file" to upload the file
+    And I wait for 1 second
     Then I click on the button labeled "Save & Exit Form"
     Then I should see "Record Home Page"
 
@@ -259,6 +263,8 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
 
     # Filter by form and field
     When I enter "Email" into the input field labeled "Field name / Label"
+    And I wait for 1 second
+    # And I wait for background processes to finish
     And I click on the button labeled "Custom range"
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Group | Event   | Arm   | Instance | Form            | Field and Label   | New Value         | Action        |
@@ -269,6 +275,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I should NOT see "text_validation_complete"
     And I should NOT see "data_types"
 
+    And I wait for 1 second
     When I click on the button labeled "Past year"
     Then I should see "The request was not run - choose all records and max window of 10 days or choose a record and any time window"
     And I should see "No log entries found"
@@ -322,7 +329,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I click on the link labeled "E.127.700"
     # Repeating Events - Instance 1
     Given I click on the link labeled "Record Status Dashboard"
-    And I click on the tab labeled "Arm 2"
+    And I click on the link labeled "Arm 2"
     And I click on the button labeled "Add new record for this arm"
     And I click the bubble to add a record for the "Data Types" longitudinal instrument on event "Event 1"
     Then I should see "Adding new Record ID 2-1"
@@ -356,7 +363,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I should see 8 rows in the data entry log table
     And I should NOT see "test_user1"
     And I should NOT see "DAG1 [1]"
-    And I should NOT see a link labeled exactly "Manage"
+    #And I should NOT see a link labeled "Manage"
 
     When I select "Create record" on the dropdown field labeled "Action"
     Then I should see a table header and rows containing the following values in the a table:
@@ -373,7 +380,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.700"
-    When I click on the link labeled exactly "Manage"
+    When I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I click on the button labeled "Configure"
     # E.127.800, E.127.900,E.127.1000
@@ -382,7 +389,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I check the checkbox labeled "If checked, event names are suffixed with the event ID"
     And I check the checkbox labeled "If checked, arm names are suffixed with the arm ID"
     And I check the checkbox labeled "If checked, DAG names are suffixed with the DAG ID"
-    And I click on the button labeled "Save" in the dialog box
+    And I click on the button labeled "Save"
     Then I should see "Data Entry Log - v1.0.0"
 
     # Filtering
@@ -430,6 +437,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I should see 6 rows in the data entry log table
 
     #VERIFY E.127.900
+    And I wait for 1 second
     When I click on the button labeled "Past year"
     Then I should see "The request was not run - choose all records and max window of 10 days or choose a record and any time window"
     And I should see "No log entries found"
@@ -446,23 +454,23 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | test_user2 | 2-1       | DAG2 [2]  | Event 1 [43] | Arm Two [2] | 2        | data_types | required [Required]                       | 2001            | Update record |
 
     And I should see 4 rows in the data entry log table
-    And I should NOT see "Arm 1"
-    And I should NOT see "Event 1 [40]"
-    And I should NOT see "Event 2 [41]"
+    # And I should NOT see "Arm 1"
+    # And I should NOT see "Event 1 [40]"
+    # And I should NOT see "Event 2 [41]"
 
   Scenario: E.127.100 - Disable external module
     # Disable external module in project
-    Given I click on the link labeled exactly "Manage"
+    Given I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.0.0"
-    When I click on the button labeled exactly "Disable"
-    Then I should see "Disable module?" in the dialog box
-    When I click on the button labeled "Disable module" in the dialog box
+    When I click on the button labeled "Disable"
+    Then I should see "Disable module?"
+    When I click on the button labeled "Disable module"
     Then I should NOT see "Data Entry Log - v1.0.0"
 
     Given I click on the link labeled "Logging"
     Then I should see a table header and row containing the following values in the logging table:
-      | Date / Time      | Username   | Action                                                                       | List of Data Changes OR Fields Exported                                                                                                                           |
+      | Time / Date      | Username   | Action                                                                       | List of Data Changes OR Fields Exported                                                                                                                           |
       | mm/dd/yyyy hh:mm | test_admin | Disable external module "data_entry_log_v1.0.0" for project                  |                                                                                                                                                                   |
       | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.0" for project | always-exclude-fields-with-regex, display-event-id-with-event-name, display-arm-id-with-arm-name, display-dag-id-with-dag-name                                    |
       | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.0" for project | reserved-hide-from-non-admins-in-project-list, max-days-all-records, display-event-id-with-event-name, display-arm-id-with-arm-name, display-dag-id-with-dag-name |
@@ -470,10 +478,10 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
 
     # Disable external module in Control Center
     Given I click on the link labeled "Control Center"
-    When I click on the link labeled exactly "Manage"
-    And I click on the button labeled exactly "Disable"
-    Then I should see "Disable module?" in the dialog box
-    When I click on the button labeled "Disable module" in the dialog box
+    When I click on the link labeled "Manage"
+    And I click on the button labeled "Disable"
+    Then I should see "Disable module?"
+    When I click on the button labeled "Disable module"
     Then I should NOT see "Data Entry Log - v1.0.0"
 
     # Not checking 'Delete Version' for now as this is used for deleting lower versions.

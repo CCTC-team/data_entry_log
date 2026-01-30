@@ -253,20 +253,20 @@ $pagingInfo = "records {$skipFrom} to {$skipTo} of {$totalCount}";
 
 //display
 $userGrpDropDown = $projUsesGroups ?
-    "<td><label for='datagrp'>Group</label></td>                
+    "<td><label>Group</label></td>
      <td>$dataGroupSelect</td>"
     : "";
 
 //the event, arm and instance row should display based on the project set up - i.e. hide according to use
 $evn = $singleEvent ? "<td/><td/>" :
-    "<td><label for='dataevnt'>Event</label></td>                
+    "<td><label>Event</label></td>
     <td>$dataEventSelect</td>";
 $arm = $singleArm ? "<td/><td/>" :
-    "<td><label for='dataarm'>Arm</label></td>                
+    "<td><label>Arm</label></td>
      <td>$dataArmSelect</td>";
 $instClass = $singleArm && $singleEvent ? "mx-0" : "mx-2";
 $ins = !$usesRepeats ? "<td/><td/>" :
-    "<td><label for='datainst' class='$instClass'>Instance</label></td>                
+    "<td><label class='$instClass'>Instance</label></td>
     <td>$dataInstanceSelect</td>";
 
 //if project uses instance and not others show that first or hide all if not used at all
@@ -280,7 +280,7 @@ if($singleArm && $singleEvent && !$usesRepeats) {
 
 //if project uses reason for change show the filter
 $reasonChange = !$usesChangeReasons ? "<td/><td/>" :
-    "<td><label for='changereason' class='mr-2'>Reason for change</label></td><td>
+    "<td><label class='mr-2'>Reason for change</label></td><td>
         <div style='display: flex; flex-direction: row'>
             <div>           
             <input id='changereason' name='changereason' type='text' size='20' maxlength='100'
@@ -316,16 +316,16 @@ echo "
                                                                     
         <table>
             <tr>
-                <td style='width: 100px;'><label for='record_id'>Record id</label></td>
+                <td style='width: 100px;'><label>Record id</label></td>
                 <td style='width: 180px' >$recordsSelect</td>
                 <td/><td/><td/>
             </tr>
             <tr>
-                <td><label for='min_date'>Min edit date</label></td>
+                <td><label>Min edit date</label></td>
                 <td><input id='startdt' style='width: 150px' name='startdt' class='x-form-text x-form-field' type='text' data-df='$userDateFormat' value='$minDate'></td>
                 <td><button class='clear-button' type='button' onclick='resetDate(\"startdt\")'><small><i class='fas fa-eraser'></i></small></button></td>
                 
-                <td><label for='max_date'>Max edit date</label></td>
+                <td><label>Max edit date</label></td>
                 <td><input id='enddt' name='enddt' class='x-form-text x-form-field' type='text' data-df='$userDateFormat' value='$maxDate'></td>
                 <td><button style='margin-left: 0' class='clear-button' type='button' onclick='resetDate(\"enddt\")'><small><i class='fas fa-eraser'></i></small></button></td>
                 
@@ -340,24 +340,24 @@ echo "
                 </td>                                    
             </tr>                       
             <tr>
-                <td><label for='retdirection'>Order by</label></td>                
+                <td><label>Order by</label></td>
                 <td>$retDirectionSelect</td>
                 <td/>
-                <td><label for='pagesize' class='mr-2'>Page size</label></td>                
+                <td><label class='mr-2'>Page size</label></td>
                 <td>$pageSizeSelect</td>                
             </tr>                    
             <tr>
-                <td><label for='editor'>Username</label></td>
+                <td><label>Username</label></td>
                 <td>$editorSelect</td>
                 <td/>                
                 $userGrpDropDown
             </tr>
             $setupRow            
             <tr>
-                <td><label for='datafrm'>Form</label></td>                
+                <td><label>Form</label></td>
                 <td>$dataFormSelect</td>
                 <td/>
-                <td><label for='datafld' class='mr-2'>Field name / Label</label></td>
+                <td><label class='mr-2'>Field name / Label</label></td>
                 <td>
                     <div style='display: flex; flex-direction: row'>
                         <div><input id='fldnamelbl' name='fldnamelbl' type='text' size='20' maxlength='100'
@@ -370,7 +370,7 @@ echo "
                         </div>
                     </div>
                 </td>
-                <td><label for='dataVal' class='mx-2'>New value</label></td>                
+                <td><label class='mx-2'>New value</label></td>
                 <td>
                     <div style='display: flex; flex-direction: row'>
                         <div><input id='newdatavalue' name='newdatavalue' type='text' size='20' maxlength='100'
@@ -385,7 +385,7 @@ echo "
                 </td>
             </tr>
             <tr>
-                <td><label for='logdescription'>Action</label></td>
+                <td><label>Action</label></td>
                 <td>$logDescriptionsSelect</td>
                 <td/>                
                 $reasonChange

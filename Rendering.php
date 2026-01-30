@@ -26,9 +26,9 @@ class Rendering {
         $projId = $module->GetProjectId();
 
         $ret = "
-<style>#log-data-entry-event td { border: 1px solid #cccccc; padding: 5px; }</style>
+<style>#log-data-entry-event-table td { border: 1px solid #cccccc; padding: 5px; }</style>
 <div style='max-width:800px;'>
-<table id='log-data-entry-event' style='table-layout: fixed;width:90%; word-break: break-word'><tr>
+<table id='log-data-entry-event-table' style='table-layout: fixed;width:90%; word-break: break-word'><tr>
     <td class='header' style='width:40px;'></td>
     <td class='header' style='width:80px;'>Date / Time</td>
     <td class='header' style='width:100px;'>Username</td>

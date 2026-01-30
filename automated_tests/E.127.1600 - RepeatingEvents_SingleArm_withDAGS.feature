@@ -13,26 +13,29 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     And I click on the button labeled "Save Changes"
     Then I should see "Your system configuration values have now been changed"
 
-    Given I click on the link labeled exactly "Manage"
+    Given I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
     And I should NOT see "Data Entry Log - v1.0.0"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled Enable for the external module named "Data Entry Log"
-    And I click on the button labeled "Enable" in the dialog box
+    And I wait for 2 seconds
+    Then I should see "Available Modules"
+    And I click on the button labeled "Enable" in the row labeled "Data Entry Log"
+    And I wait for 1 second
+    And I click on the button labeled "Enable"
     Then I should see "Data Entry Log - v1.0.0"
  
   Scenario: Enable external module in project
-    Given I create a new project named "E.127.1600" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdics_files/ProjectTypes/RepeatingEvents_SingleArm_withDAGS.xml", and clicking the "Create Project" button
-    And I click on the link labeled exactly "Manage"
+    Given I create a new project named "E.127.1600" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/ProjectTypes/RepeatingEvents_SingleArm_withDAGS.xml", and clicking the "Create Project" button
+    And I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled Enable for the external module named "Data Entry Log - v1.0.0"
+    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.0"
     Then I should see "Data Entry Log - v1.0.0"
 
-    When I click on the button labeled exactly "Configure"
+    When I click on the button labeled "Configure"
     Then I should see "Configure Module"
-    When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried" in the dialog box
-    And I click on the button labeled "Save" in the dialog box
+    When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried"
+    And I click on the button labeled "Save"
     Then I should see "Data Entry Log - v1.0.0"
 
     # Add User Test_User1 with 'Project Setup & Design' rights
@@ -57,7 +60,7 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     And I select "DAG1" on the dropdown field labeled "to"
     And I click on the button labeled "Assign"
 
-    Then I should see a table header and rows containing the following values in data access groups table:
+    Then I should see a table header and rows containing the following values in a table:
       | Data Access Groups | Users in group          |
       | DAG1               | test_user1 (Test User1) |
 
@@ -67,7 +70,7 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     And I select "DAG2" on the dropdown field labeled "to"
     And I click on the button labeled "Assign"
 
-    Then I should see a table header and rows containing the following values in data access groups table:
+    Then I should see a table header and rows containing the following values in a table:
       | Data Access Groups | Users in group          |
       | DAG1               | test_user1 (Test User1) |
       | DAG2               | test_user2 (Test User2) |
@@ -121,7 +124,7 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     And I should see "(Instance #3)"
     Then I enter "Notes" into the data entry form field labeled "Note Box"
     And I click on the link labeled "Upload file"
-    And I upload a "csv" format file located at "import_files/redcap_val/file1.csv", by clicking the button near "Select a file" to browse for the file, and clicking the button labeled "Upload file" to upload the file
+    And I upload a "csv" format file located at "fixtures/import_files/file1.csv", by clicking the button near "Select a file" to browse for the file, and clicking the button labeled "Upload file" to upload the file
     Then I click on the button labeled "Save & Exit Form"
     Then I should see "Record Home Page"
 
@@ -196,20 +199,20 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.1600"
-    And I click on the link labeled exactly "Manage"
+    And I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.0.0"
-    When I click on the button labeled exactly "Disable"
-    Then I should see "Disable module?" in the dialog box
-    When I click on the button labeled "Disable module" in the dialog box
+    When I click on the button labeled "Disable"
+    Then I should see "Disable module?"
+    When I click on the button labeled "Disable module"
     Then I should NOT see "Data Entry Log - v1.0.0"
 
     # Disable external module in Control Center
     Given I click on the link labeled "Control Center"
-    When I click on the link labeled exactly "Manage"
-    And I click on the button labeled exactly "Disable"
-    Then I should see "Disable module?" in the dialog box
-    When I click on the button labeled "Disable module" in the dialog box
+    When I click on the link labeled "Manage"
+    And I click on the button labeled "Disable"
+    Then I should see "Disable module?"
+    When I click on the button labeled "Disable module"
     Then I should NOT see "Data Entry Log - v1.0.0"
     And I logout
 

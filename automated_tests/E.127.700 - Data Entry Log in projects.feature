@@ -286,12 +286,14 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.700"
     Given I click on the link labeled "Record Status Dashboard"
-    When I locate the bubble for the "Data Types" instrument on event "Event 1" for record ID "1-2" and click the repeating instrument bubble for the third instance
+    And I click on the link labeled "1-2"
+    And I click on the icon in the column labeled "" and the row labeled "3"
     Then I clear the field labeled "Name"
     And I click on the button labeled "Save & Exit Form"
 
     Given I click on the link labeled "Record Status Dashboard"
-    When I locate the bubble for the "Data Types" instrument on event "Event 1" for record ID "1-2" and click the repeating instrument bubble for the first instance
+    And I click on the link labeled "1-2"
+    And I click on the icon in the column labeled "" and the row labeled "1"
     Then I clear the field labeled "Name"
     And I click the "reset" link for the field labeled "Radio Button Auto"
     And I click on the button labeled "Save & Exit Form"

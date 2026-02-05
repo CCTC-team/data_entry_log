@@ -4,6 +4,29 @@ namespace CCTC\DataEntryLogModule;
 
 class GetDbData
 {
+    /**
+     * Safely escapes a string value for use in SQL queries.
+     * Returns 'null' (as SQL literal) if the value is null or empty, otherwise returns escaped quoted string.
+     */
+    private static function escapeStringParam($conn, ?string $value): string
+    {
+        if ($value === null || $value === "") {
+            return "null";
+        }
+        return "'" . mysqli_real_escape_string($conn, $value) . "'";
+    }
+
+    /**
+     * Safely converts a value to an integer for use in SQL queries.
+     * Returns 'null' (as SQL literal) if the value is null or empty, otherwise returns the integer value.
+     */
+    private static function escapeIntParam($value): string
+    {
+        if ($value === null || $value === "" || !is_numeric($value)) {
+            return "null";
+        }
+        return (string)(int)$value;
+    }
 
     // returns all the dags for the current project and user
     // if the username is not given, just assumes the current user
@@ -53,10 +76,10 @@ class GetDbData
         while ($row = db_fetch_assoc($result))
         {
             $userDag = new UserDag();
-            $userDag->project_id = $row['project_id'];
+            $userDag->projectId = $row['project_id'];
             $userDag->username = $row['username'];
-            $userDag->group_name = $row['group_name'];
-            $userDag->group_id = $row['group_id'];
+            $userDag->groupName = $row['group_name'];
+            $userDag->groupId = $row['group_id'];
 
             $userDags[] = $userDag;
         }
@@ -127,27 +150,37 @@ class GetDbData
         global $conn;
 
         $projId = $module->getProjectId();
-        $retDirection = $retDirection == null ? "desc" : $retDirection;
-        $recordId = $recordId == null ? "null" : "'$recordId'";
-        $minDate = $minDate == null ? "null" : $minDate;
-        $maxDate = $maxDate == null ? "null" : $maxDate;
-        $dagUser = $dagUser == null ? "null" : "'$dagUser'";
-        $logUser = $logUser == null ? "null" : "'$logUser'";
-        $eventId = $eventId == null ? "null" : $eventId;
-        $groupId = $groupId == null ? "null" : $groupId;
-        $armNum = $armNum == null ? "null" : $armNum;
-        $instance = $instance == null ? "null" : $instance;
-        $logDescription = $logDescription == null ? "null" : "'$logDescription'";
-        $changeReason = $changeReason == null ? "null" : "'$changeReason'";
-        $dataForm = $dataForm == null ? "null" : "'$dataForm'";
-        $fieldNameOrLabel = $fieldNameOrLabel == null ? "null" : "'$fieldNameOrLabel'";
-        $newDataValue = $newDataValue == null ? "null" : "'$newDataValue'";
-        $excludeFieldNameRegex = $excludeFieldNameRegex == null ? "null" : "'$excludeFieldNameRegex'";
 
+        // Validate and sanitize retDirection - only allow 'asc' or 'desc'
+        $retDirection = ($retDirection !== null && strtolower($retDirection) === 'asc') ? 'asc' : 'desc';
 
-        $query = "call GetDataEntryLogs($skipCount, $pageSize, $projId, '$retDirection', $recordId, 
-                $minDate, $maxDate, $dagUser, $logUser, $eventId, $groupId, $armNum, $instance, $logDescription, 
-                $changeReason, $dataForm, $fieldNameOrLabel, $newDataValue, $excludeFieldNameRegex);";
+        // Required integer parameters - always have valid defaults
+        $skipCountSafe = (string)(int)$skipCount;
+        $pageSizeSafe = (string)(int)$pageSize;
+        $projIdSafe = (string)(int)$projId;
+
+        // Optional integer parameters (escapeIntParam handles null, empty, and non-numeric values)
+        $eventIdSafe = self::escapeIntParam($eventId);
+        $groupIdSafe = self::escapeIntParam($groupId);
+        $armNumSafe = self::escapeIntParam($armNum);
+        $instanceSafe = self::escapeIntParam($instance);
+        $minDateSafe = self::escapeIntParam($minDate);
+        $maxDateSafe = self::escapeIntParam($maxDate);
+
+        // Safely escape string parameters
+        $recordIdSafe = self::escapeStringParam($conn, $recordId);
+        $dagUserSafe = self::escapeStringParam($conn, $dagUser);
+        $logUserSafe = self::escapeStringParam($conn, $logUser);
+        $logDescriptionSafe = self::escapeStringParam($conn, $logDescription);
+        $changeReasonSafe = self::escapeStringParam($conn, $changeReason);
+        $dataFormSafe = self::escapeStringParam($conn, $dataForm);
+        $fieldNameOrLabelSafe = self::escapeStringParam($conn, $fieldNameOrLabel);
+        $newDataValueSafe = self::escapeStringParam($conn, $newDataValue);
+        $excludeFieldNameRegexSafe = self::escapeStringParam($conn, $excludeFieldNameRegex);
+
+        $query = "call GetDataEntryLogs($skipCountSafe, $pageSizeSafe, $projIdSafe, '$retDirection', $recordIdSafe,
+                $minDateSafe, $maxDateSafe, $dagUserSafe, $logUserSafe, $eventIdSafe, $groupIdSafe, $armNumSafe, $instanceSafe, $logDescriptionSafe,
+                $changeReasonSafe, $dataFormSafe, $fieldNameOrLabelSafe, $newDataValueSafe, $excludeFieldNameRegexSafe);";
 
         $currentIndex = 0;
 
@@ -164,87 +197,76 @@ class GetDbData
         if (mysqli_multi_query($conn, $query)) {
             do {
                 if ($result = mysqli_store_result($conn)) {
+                    switch ($currentIndex) {
+                        case 0: // Total count
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $totalCount = $row['total_count'];
+                            }
+                            break;
 
-                    //total number of records
-                    if($currentIndex == 0) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $totalCount = $row['total_count'];
-                        }
-                    }
+                        case 1: // Distinct log users
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $logUsers[] = $row['log_user'];
+                            }
+                            break;
 
-                    //the distinct list of log users in the result set
-                    if($currentIndex == 1) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $logUsers[] = $row['log_user'];
-                        }
-                    }
+                        case 2: // Distinct data forms
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $dataForms[] = $row['form_name'];
+                            }
+                            break;
 
-                    //get the distinct list of data forms
-                    if($currentIndex == 2) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $dataForms[] = $row['form_name'];
-                        }
-                    }
-
-                    //get the distinct list of groups (group id and name)
-                    if($currentIndex == 3) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $groups[] =
-                                [
+                        case 3: // Distinct groups (id and name)
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $groups[] = [
                                     "groupId" => $row['group_id'],
                                     "groupName" => $row['group_name'],
                                 ];
-                        }
-                    }
+                            }
+                            break;
 
-                    //get the distinct list of events (event id and name)
-                    if($currentIndex == 4) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $events[] =
-                                [
+                        case 4: // Distinct events (id and name)
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $events[] = [
                                     "eventId" => $row['event_id'],
                                     "eventName" => $row['event_name'],
                                 ];
-                        }
-                    }
+                            }
+                            break;
 
-                    //get the distinct list of arms (arm num and name)
-                    if($currentIndex == 5) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $arms[] =
-                                [
+                        case 5: // Distinct arms (num and name)
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $arms[] = [
                                     "armNum" => $row['arm_num'],
                                     "armName" => $row['arm_name'],
                                 ];
-                        }
-                    }
+                            }
+                            break;
 
-                    //get the distinct list of instances
-                    if($currentIndex == 6) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $instances[] = $row['instance'];
-                        }
-                    }
+                        case 6: // Distinct instances
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $instances[] = $row['instance'];
+                            }
+                            break;
 
-                    //get the distinct list of descriptions for log
-                    if($currentIndex == 7) {
-                        while ($row = mysqli_fetch_assoc($result)) {
-                            $logDescriptions[] = $row['description'];
-                        }
-                    }
+                        case 7: // Distinct log descriptions
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $logDescriptions[] = $row['description'];
+                            }
+                            break;
 
-                    //the results
-                    if($currentIndex == 8) {
-                        $dataChanges = self::GetDataChangesFromResult($result);
+                        case 8: // Data changes (main results)
+                            $dataChanges = self::GetDataChangesFromResult($result);
+                            break;
                     }
 
                     mysqli_free_result($result);
-
                     $currentIndex++;
                 }
             } while (mysqli_next_result($conn));
         } else {
-            echo "Error: " . $conn->error;
+            // Log error securely instead of displaying to user
+            $module->log("GetDataEntryLogs query error: " . $conn->error);
         }
 
         //NOTE: changes here require changes in ReturnEmptyResponse
@@ -337,7 +359,7 @@ class GetDbData
         global $module;
         $projId = $module->getProjectId();
 
-        $query = "select count(*) as num_arms from redcap.redcap_events_arms where project_id = ?";
+        $query = "select count(*) as num_arms from redcap_events_arms where project_id = ?";
 
         $result = $module->query($query, [ $projId ]);
         $numArms = 0;

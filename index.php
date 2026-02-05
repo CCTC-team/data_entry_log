@@ -170,8 +170,8 @@ $dagUser = count($userDags) > 0 ? $username : null;
 //check for valid min and max dates and record id
 //either a specific record must be given or a maximum time of 30 days for all records
 
-$actMinAsDate = $minDate == "" ? Utility::DefaultMinDate() : Utility::DateStringAsDateTime($minDate);
-$actMaxAsDate = $maxDate == "" ? Utility::Now() : Utility::DateStringAsDateTime($maxDate);
+$actMinAsDate = $minDate == "" ? Utility::DefaultMinDate() : (Utility::DateStringAsDateTime($minDate) ?? Utility::DefaultMinDate());
+$actMaxAsDate = $maxDate == "" ? Utility::Now() : (Utility::DateStringAsDateTime($maxDate) ?? Utility::Now());
 $fixMaxDate = $actMaxAsDate > Utility::Now() ? Utility::Now() : $actMaxAsDate;
 
 $diff = $actMaxAsDate->diff($actMinAsDate);

@@ -15,12 +15,17 @@ require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/UserDag.php";
 require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/DataChange.php";
 require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/Utility.php";
 require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/Rendering.php";
+require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/InputValidator.php";
 require_once APP_PATH_DOCROOT . "/Classes/Records.php";
 require_once APP_PATH_DOCROOT . "/Classes/RCView.php";
 require_once APP_PATH_DOCROOT . "/Classes/DateTimeRC.php";
 
 use CCTC\DataEntryLogModule\GetDbData;
 use CCTC\DataEntryLogModule\DataEntryLogModule;
+use CCTC\DataEntryLogModule\InputValidator;
+
+// Maximum number of records to export at once (prevents memory/timeout issues)
+const MAX_EXPORT_RECORDS = 1000000;
 
 // Increase memory limit in case needed for intensive processing
 //System::increaseMemory(2048);
@@ -50,16 +55,16 @@ include "getparams.php";
 //runForExport means it only returns the actual data requested (and not data for filters)
 
 //use the export_type param to determine what to export and adjust params accordingly
-$exportType = $_GET['export_type'];
+// Validate export_type against allowed values
+$allowedExportTypes = ['current_page', 'all_pages', 'everything'];
+$exportType = InputValidator::getEnumParam('export_type', $allowedExportTypes, 'current_page');
 
 //if current_page then keep the params already captured from getparams.php
 
 //change paging to include everything
 if($exportType == 'all_pages' || $exportType == 'everything') {
-    //change the pagesize to a sensible 'unlimited' max. Actual max for limit as unsigned int is 18446744073709551615
-    //but use 1 million
     $skipCount = 0;
-    $pageSize = 1000000;
+    $pageSize = MAX_EXPORT_RECORDS;
 }
 
 //set all filters to null
@@ -148,7 +153,6 @@ if ($fp && $result)
 
         // Close file for writing
         fclose($fp);
-        db_free_result($result);
 
         // Open file for downloading
         $app_title = strip_tags(label_decode($Proj->project['app_title']));

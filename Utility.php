@@ -10,6 +10,9 @@ require_once APP_PATH_DOCROOT . "/Classes/DateTimeRC.php";
 
 class Utility {
 
+    // Default number of years to look back for the minimum date filter
+    const DEFAULT_MIN_DATE_YEARS_AGO = 5;
+
     public static function MakeFormLink($baseUrl, $projectId, $recordId, $eventId, $formName, $fldName, $instance, $val): string
     {
         if($instance !== null)
@@ -99,34 +102,45 @@ class Utility {
         }
     }
 
-    //default min date
+    /**
+     * Returns the default minimum date for date range filters.
+     * Uses a relative date (years ago from today) to avoid becoming outdated.
+     */
     public static function DefaultMinDate() : DateTime
     {
-        return date_create(date("2022-01-01 00:00:00"));
+        $yearsAgo = self::DEFAULT_MIN_DATE_YEARS_AGO;
+        return self::Now()->modify("-{$yearsAgo} years")->setTime(0, 0, 0);
     }
 
-    //this could be based on first log entry but doesn't really matter for now
+    /**
+     * Returns the default minimum date formatted in the user's preferred format.
+     */
     public static function DefaultMinDateInUserFormatAsString() : string
     {
         return self::FullDateTimeInUserFormatAsString(self::DefaultMinDate());
     }
 
     //converts a given date string to the given format or default format if no format given
+    //returns null if date is null, empty, or if parsing fails
     public static function DateStringAsDateTime(?string $date, ?string $format = null) : ?DateTime
     {
-        if($date == null) return null;
+        if($date === null || $date === "") return null;
 
-        $formatToUse = $format == null ? self::UserDateTimeFormatNoSeconds(): $format;
-        return DateTime::createFromFormat($formatToUse, $date);
+        $formatToUse = $format === null ? self::UserDateTimeFormatNoSeconds(): $format;
+        $dateTime = DateTime::createFromFormat($formatToUse, $date);
+        return $dateTime === false ? null : $dateTime;
     }
 
     // returns a nullable string date as a format compatible with the timestamp function
-    // returns null if null given
+    // returns null if null or empty given, or if date parsing fails
     public static function DateStringToDbFormat(?string $date) : ?string
     {
-        if($date == null) return null;
+        if($date === null || $date === "") return null;
 
         $dateTime = DateTime::createFromFormat(self::UserDateTimeFormatNoSeconds(), $date);
+        if($dateTime === false) {
+            return null;
+        }
         return $dateTime->format('YmdHis');
     }
 }

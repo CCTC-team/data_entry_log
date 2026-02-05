@@ -15,16 +15,11 @@
       "institution": "Cambridge University Hospital - Cambridge Cancer Trials Centre"
     }
   ],
-
   "enable-ajax-logging": true,
-
   "auth-ajax-actions": [
     "action-1",
     "action-2"
   ],
-
-
-
   "links": {
     "project": [
       {
@@ -36,8 +31,6 @@
       }
     ]
   },
-  "system-settings": [
-  ],
   "project-settings": [
     {
       "key": "max-days-all-records",
@@ -80,7 +73,6 @@
       "super-users-only": true
     }
   ],
-
   "compatibility": {
     "php-version-min": "8.0.27",
     "php-version-max": "8.2.29",

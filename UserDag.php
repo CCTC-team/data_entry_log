@@ -4,8 +4,8 @@ namespace CCTC\DataEntryLogModule;
 
 class UserDag {
 
-    public $group_id;
-    public $project_id;
-    public $group_name;
-    public $username;
+    public ?int $groupId = null;
+    public ?int $projectId = null;
+    public ?string $groupName = null;
+    public ?string $username = null;
 }

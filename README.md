@@ -56,7 +56,7 @@ The following project level settings are available;
 
 #### Automation Testing
 
-This module is tested using automated tests implemented with the **Cypress** framework. To set up Cypress, refer to the following repository:  
+The module includes comprehensive **Cypress automated** tests using the **Cucumber/Gherkin framework**. To set up Cypress, refer to the following repository:  
 https://github.com/vanderbilt-redcap/redcap_cypress
 
 We use a custom Docker instance, **CCTC_REDCap_Docker**, instead of `redcap_docker`. This instance mirrors our Live environment by using the same versions of **MariaDB** and **PHP**.

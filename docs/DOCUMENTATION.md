@@ -6,6 +6,7 @@ The Data Entry Log module is a REDCap External Module that provides enhanced dat
 
 **Namespace:** `CCTC\DataEntryLogModule`
 **Framework Version:** 14
+- **Documentation**: https://github.com/CCTC-team/data_entry_log
 **Authors:**
 - Richard Hardy (University of Cambridge - Cambridge Cancer Trials Centre)
 - Mintoo Xavier (Cambridge University Hospital - Cambridge Cancer Trials Centre)

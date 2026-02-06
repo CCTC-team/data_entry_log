@@ -3,6 +3,7 @@
   "description": "Module that helps data managers manage project data",
   "namespace": "CCTC\\DataEntryLogModule",
   "framework-version": 14,
+  "documentation": "https://github.com/CCTC-team/data_entry_log",
   "authors": [
     {
       "name": "Richard Hardy",

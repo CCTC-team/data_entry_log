@@ -1,4 +1,4 @@
-### Data Entry Log ###
+### Data Entry Log
 
 The Data Entry log is designed to help users review and query data entered within a project. The existing Logging
 feature provides limited help to Data managers who need to review recently entered data and may, for example, wish to
@@ -8,7 +8,7 @@ This module simply accesses logs creating by the vanilla system and interrogates
 there are no logs (for instance in a project that has been imported from xml with data), the module will be of limited
 use. The module shows records for the user's current DAG only and does not support users assigned to multiple DAGs.
 
-#### System set up ####
+#### System set up
 
 Enabling the module at a system level will automatically create some functions and procedures as required;
 1. Create the `GetDataEntryLogs` stored procedure in the REDCap database. This procedure is required to provide the log
@@ -36,7 +36,7 @@ The following project level settings are available;
 - `display-arm-id-with-arm-name` - when checked, the arm names are shown with an arm id suffix rather just name
     i.e. 'Arm 2 [2]' rather than simple 'Arm 2'
 
-#### Usage ####
+#### Usage
 
 - the module is only available to users who have the logging module permission (always available to superadmin)
 - when the user is a member of a DAG, they can only see log entries for DAGS they have membership of	
@@ -54,8 +54,20 @@ The following project level settings are available;
 -  the log includes an eyeball icon which is a link to the relevant form. Using the browser back button will return the
   user to the log with the same filters applied
 
+#### Automation Testing
 
-#### Potential improvements ####
+This module is tested using automated tests implemented with the **Cypress** framework. To set up Cypress, refer to the following repository:  
+https://github.com/vanderbilt-redcap/redcap_cypress
+
+We use a custom Docker instance, **CCTC_REDCap_Docker**, instead of `redcap_docker`. This instance mirrors our Live environment by using the same versions of **MariaDB** and **PHP**.
+
+All automated test scripts are located in the `automated_tests` directory. These scripts can also be used by users to manually test the external module. The directory contains:
+- Custom step definitions created by our team
+- Fixture files
+- User Requirement Specification (URS) documents
+- Feature test scripts
+
+#### Potential improvements
 
 - amend stored procedure when filtering for values that have a text input and use a 'like' expression, and use a regex
   with 'rlike' in the stored procedure to make the filtering more flexible. This is an advanced option so users should

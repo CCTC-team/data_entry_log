@@ -24,7 +24,7 @@ class DataEntryLogModule extends AbstractExternalModule {
 
     public function validateSettings($settings): ?string
     {
-        if (array_key_exists("max-days-all-records", $settings)) {
+        if (array_key_exists("max-days-all-records", $settings) && !empty($settings['max-days-all-records'])) {
             if(!is_numeric($settings['max-days-all-records']) || $settings['max-days-all-records'] < 1 || $settings['max-days-all-records'] > 365) {
                 return "The maximum number of days permitted should be a number between 1 and 365";
             }

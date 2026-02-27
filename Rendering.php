@@ -46,8 +46,6 @@ class Rendering {
         ($includeElementType ? "<td class='header' style='width:100px;'>element type</td>" : "") .
     "</tr>";
 
-        $baseUrl = APP_PATH_WEBROOT_FULL;
-
         //get display options
         $includeEventId = $module->getProjectSetting('display-event-id-with-event-name');
         $includeArmId = $module->getProjectSetting('display-arm-id-with-arm-name');
@@ -72,7 +70,7 @@ class Rendering {
             $instance = strval($dc->instance) == "NULL" || strval($dc->instance) == null ? "1" : $dc->instance;
             $field = Rendering::displayFromParts($dc->fieldLabel, $dc->fieldName);
             $newVal = nl2br(stripcslashes($dc->newValue));
-            $goLink = Utility::MakeFormLink($baseUrl, $projId, $dc->recordId, $dc->eventId, $dc->formName, $dc->fieldName, $dc->instance, "<i class='fas fa-eye'></i>");
+            $goLink = Utility::MakeFormLink($projId, $dc->recordId, $dc->eventId, $dc->formName, $dc->fieldName, $dc->instance, "<i class='fas fa-eye'></i>");
 
             $ret = $ret .
             "<tr>

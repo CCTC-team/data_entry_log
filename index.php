@@ -176,21 +176,10 @@ $fixMaxDate = $actMaxAsDate > Utility::Now() ? Utility::Now() : $actMaxAsDate;
 
 $diff = $actMaxAsDate->diff($actMinAsDate);
 
-//get the permitted max days from config
-$maxDays = $module->getProjectSetting('max-days-all-records');
+//get the permitted max days from config; defaults to 31 if not configured
+$maxDays = $module->getProjectSetting('max-days-all-records') ?: 31;
 
-//if the max days is not set, then do nothing
-if (empty($maxDays)) {
-    echo "<script type='text/javascript'>
-            alert('Please ensure the mandatory fields in the Data Entry Log External Module are configured.');
-        </script>";
-    return;
-}
-
-//set default if needed
-if($maxDays == null || $maxDays == ''){
-    $maxDays = 31;
-} elseif ($maxDays > 365) {
+if ($maxDays > 365) {
     $maxDays = 31;
 }
 

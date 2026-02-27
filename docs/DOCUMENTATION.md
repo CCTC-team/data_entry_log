@@ -80,7 +80,7 @@ data_entry_log_v1.0.0/
 
 | Setting | Type | Description |
 |---------|------|-------------|
-| `max-days-all-records` | text | Maximum days allowed (1-365) when querying all records without specifying a record ID. Required for performance optimization. |
+| `max-days-all-records` | text | Maximum days allowed (1-365) when querying all records without specifying a record ID. Optional; defaults to 31 if not configured. |
 | `always-exclude-fields-with-regex` | textarea | Regex pattern to exclude fields from logs (without leading/trailing slashes). |
 | `display-event-id-with-event-name` | checkbox | Suffix event names with event ID (e.g., "Event 1 [66]"). |
 | `display-arm-id-with-arm-name` | checkbox | Suffix arm names with arm ID (e.g., "Arm 1 [1]"). |
@@ -162,7 +162,7 @@ Static utility class for formatting, date/time handling, and links.
 - `DEFAULT_MIN_DATE_YEARS_AGO = 5` - Number of years to look back for the default minimum date filter
 
 **Methods:**
-- `MakeFormLink($baseUrl, $projectId, $recordId, $eventId, $formName, $fldName, $instance, $val)` - Creates HTML link to navigate to specific form/field
+- `MakeFormLink($projectId, $recordId, $eventId, $formName, $fldName, $instance, $val)` - Creates HTML link to navigate to specific form/field
 - `groupBy($array, $function)` - Groups array elements by key returned from callback function
 - `UserDateFormat()` - Gets user's preferred date format
 - `UserDateTimeFormat()` - Gets user's preferred datetime format with seconds

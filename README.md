@@ -24,10 +24,10 @@ When a new version of the module becomes available, the module should be disable
 
 The following project level settings are available;
 
-- `max-days-all-records` - the maximum number of days available to view in the log when viewing all records. A sensible
-  value is 31 to show all records in the last month. The performance impact of the query increases with the number. 
-  Adjust the value to consider the impact. A project with many records and large amounts of data should use a smaller 
-  number. Please note if a value greater than 365 is selected, it will default back to 31.
+- `max-days-all-records` - the maximum number of days available to view in the log when viewing all records. Defaults
+  to 31 if not configured. The performance impact of the query increases with the number. Adjust the value to consider
+  the impact. A project with many records and large amounts of data should use a smaller number. If a value greater
+  than 365 is selected, it will default back to 31.
 - `always-exclude-fields-with-regex` - providing a regular expression for this setting will result in any fields 
   matching the expression ALWAYS being removed from the list of log entries. For example, using a value such as
   '_monstat\$|_crfver\$' will exclude any fields whose names end with _monstat and _crfver

@@ -13,14 +13,16 @@ class Utility {
     // Default number of years to look back for the minimum date filter
     const DEFAULT_MIN_DATE_YEARS_AGO = 5;
 
-    public static function MakeFormLink($baseUrl, $projectId, $recordId, $eventId, $formName, $fldName, $instance, $val): string
+    public static function MakeFormLink($projectId, $recordId, $eventId, $formName, $fldName, $instance, $val): string
     {
+        $baseUrl = APP_PATH_WEBROOT;
+
         if($instance !== null)
         {
             $instance = "&instance=" . $instance;
         }
 
-        return "<a href='{$baseUrl}/DataEntry/index.php?pid={$projectId}&id={$recordId}&event_id={$eventId}&page={$formName}{$instance}&fldfocus={$fldName}#{$fldName}-tr'>{$val}</a>";
+        return "<a href='{$baseUrl}DataEntry/index.php?pid={$projectId}&id={$recordId}&event_id={$eventId}&page={$formName}{$instance}&fldfocus={$fldName}#{$fldName}-tr'>{$val}</a>";
     }
 
     // groups an array

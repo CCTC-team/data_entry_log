@@ -2,7 +2,7 @@
   "name": "Data Entry Log",
   "description": "Module that helps data managers manage project data",
   "namespace": "CCTC\\DataEntryLogModule",
-  "framework-version": 14,
+  "framework-version": 16,
   "documentation": "https://github.com/CCTC-team/data_entry_log",
   "authors": [
     {
@@ -38,7 +38,7 @@
       "name": "The maximum number of days permitted when not limiting the records being queried. Limit to improve performance",
       "type": "text",
       "repeatable": false,
-      "required": true,
+      "required": false,
       "super-users-only": true
     },
     {

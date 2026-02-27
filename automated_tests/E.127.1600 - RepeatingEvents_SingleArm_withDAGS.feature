@@ -32,12 +32,6 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.0"
     Then I should see "Data Entry Log - v1.0.0"
 
-    When I click on the button labeled "Configure"
-    Then I should see "Configure Module"
-    When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried"
-    And I click on the button labeled "Save"
-    Then I should see "Data Entry Log - v1.0.0"
-
     # Add User Test_User1 with 'Project Setup & Design' rights
     Given I click on the link labeled "User Rights"
     And I enter "Test_User1" into the input field labeled "Add with custom rights"
@@ -125,6 +119,7 @@ Feature: E.127.1600 - RepeatingEvents_SingleArm_withDAGS
     Then I enter "Notes" into the data entry form field labeled "Note Box"
     And I click on the link labeled "Upload file"
     And I upload a "csv" format file located at "fixtures/import_files/file1.csv", by clicking the button near "Select a file" to browse for the file, and clicking the button labeled "Upload file" to upload the file
+    And I wait for 1 second
     Then I click on the button labeled "Save & Exit Form"
     Then I should see "Record Home Page"
 

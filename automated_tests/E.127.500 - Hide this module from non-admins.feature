@@ -76,7 +76,6 @@ Scenario: E.127.500 - Hide this module from non-admins in the list of enabled mo
     Then I should see "Data Entry Log - v1.0.0"
     When I click on the button labeled "Configure"
     And I check the checkbox labeled "Hide this module from non-admins in the list of enabled modules on this project"
-    And I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried"
     And I click on the button labeled "Save"
     Then I should see "Data Entry Log - v1.0.0"
     And I logout

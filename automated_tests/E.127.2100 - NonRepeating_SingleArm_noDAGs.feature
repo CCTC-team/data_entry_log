@@ -34,12 +34,6 @@ Feature: E.127.2100 - NonRepeating_SingleArm_noDAGs
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.0"
     Then I should see "Data Entry Log - v1.0.0"
 
-    When I click on the button labeled "Configure"
-    Then I should see "Configure Module"
-    When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried"
-    And I click on the button labeled "Save"
-    Then I should see "Data Entry Log - v1.0.0"
-
     # Add User Test_User1 with 'Project Setup & Design' rights
     Given I click on the link labeled "User Rights"
     And I enter "Test_User1" into the input field labeled "Add with custom rights"

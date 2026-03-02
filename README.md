@@ -10,6 +10,8 @@ use. The module shows records for the user's current DAG only and does not suppo
 
 #### System set up
 
+> **Note:** This module has been tested with **MariaDB versions 10.5 and 10.11**. Please verify that the module works correctly with your specific database version before deploying to a production environment.
+
 Enabling the module at a system level will automatically create some functions and procedures as required;
 1. Create the `GetDataEntryLogs` stored procedure in the REDCap database. This procedure is required to provide the log
    of data entries

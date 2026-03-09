@@ -58,12 +58,9 @@ The following project level settings are available;
 
 #### Automation Testing
 
-The module includes comprehensive **Cypress automated** tests using the **Cucumber/Gherkin framework**. To set up Cypress, refer to the following repository:  
-https://github.com/vanderbilt-redcap/redcap_cypress
+The module includes comprehensive **Cypress automated** tests using the **Cucumber/Gherkin framework**. To set up Cypress, refer to [CCTC REDCap Cypress Test Suite](https://github.com/CCTC-team/redcap_cypress/blob/redcap_val/README.md).
 
-We use a custom Docker instance, **CCTC_REDCap_Docker**, instead of `redcap_docker`. This instance mirrors our Live environment by using the same versions of **MariaDB** and **PHP**.
-
-All automated test scripts are located in the `automated_tests` directory. These scripts can also be used by users to manually test the external module. The directory contains:
+All automated test scripts are located in the `automated_tests` directory. The test suite automatically picks up the scripts from this folder. These scripts can also be used to manually test the external module. The directory contains:
 - Custom step definitions created by our team
 - Fixture files
 - User Requirement Specification (URS) documents

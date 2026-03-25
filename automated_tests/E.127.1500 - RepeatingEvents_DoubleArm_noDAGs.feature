@@ -15,14 +15,14 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
 
     Given I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
-    And I should NOT see "Data Entry Log - v1.0.0"
+    And I should NOT see "Data Entry Log - v1.0.1"
     When I click on the button labeled "Enable a module"
     And I wait for 2 seconds
     Then I should see "Available Modules"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log"
     And I wait for 1 second
     And I click on the button labeled "Enable"
-    Then I should see "Data Entry Log - v1.0.0"
+    Then I should see "Data Entry Log - v1.0.1"
  
   Scenario: Enable external module in project
     Given I create a new project named "E.127.1500" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/ProjectTypes/RepeatingEvents_DoubleArm_noDAGS.xml", and clicking the "Create Project" button
@@ -31,8 +31,8 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
     And I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.0"
-    Then I should see "Data Entry Log - v1.0.0"
+    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.1"
+    Then I should see "Data Entry Log - v1.0.1"
 
     # Add User Test_User1 with 'Project Setup & Design' rights
     Given I click on the link labeled "User Rights"
@@ -81,6 +81,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
     And I click on the link labeled "1"
     Then I should see "Record Home Page"
     And I click on the button labeled "Add new"
+    And I wait for 1 second
     When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 1"
     And I should see "Data Types"
@@ -92,6 +93,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
 
     # Repeating Events Arm 1 - Instance 3
     Given I click on the button labeled "Add new"
+    And I wait for 1 second
     When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 1"
     And I should see "Data Types"
@@ -136,6 +138,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
 
     # Repeating Events Arm 2 - Instance 2
     Given I click on the button labeled "Add new"
+    And I wait for 1 second
     When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 2"
     And I should see "Data Types"
@@ -183,11 +186,11 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
     And I click on the link labeled "E.127.1500"
     And I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
-    And I should see "Data Entry Log - v1.0.0"
+    And I should see "Data Entry Log - v1.0.1"
     When I click on the button labeled "Disable"
     Then I should see "Disable module?"
     When I click on the button labeled "Disable module"
-    Then I should NOT see "Data Entry Log - v1.0.0"
+    Then I should NOT see "Data Entry Log - v1.0.1"
 
     # Disable external module in Control Center
     Given I click on the link labeled "Control Center"
@@ -195,7 +198,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
     And I click on the button labeled "Disable"
     Then I should see "Disable module?"
     When I click on the button labeled "Disable module"
-    Then I should NOT see "Data Entry Log - v1.0.0"
+    Then I should NOT see "Data Entry Log - v1.0.1"
     And I logout
 
     # Verify no exceptions are thrown in the system

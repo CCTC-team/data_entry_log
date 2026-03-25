@@ -15,28 +15,28 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
 
     Given I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
-    And I should NOT see "Data Entry Log - v1.0.0"
+    And I should NOT see "Data Entry Log - v1.0.1"
     When I click on the button labeled "Enable a module"
     And I wait for 2 seconds
     Then I should see "Available Modules"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log"
     And I wait for 1 second
     And I click on the button labeled "Enable"
-    Then I should see "Data Entry Log - v1.0.0"
+    Then I should see "Data Entry Log - v1.0.1"
  
   Scenario: Enable external module in project
     Given I create a new project named "E.127.700" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
     And I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.0"
-    Then I should see "Data Entry Log - v1.0.0"
+    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.0.1"
+    Then I should see "Data Entry Log - v1.0.1"
 
     When I click on the button labeled "Configure"
     Then I should see "Configure Module"
     When I enter "10" into the input field labeled "The maximum number of days permitted when not limiting the records being queried"
     And I click on the button labeled "Save"
-    Then I should see "Data Entry Log - v1.0.0"
+    Then I should see "Data Entry Log - v1.0.1"
 
     # Add User Test_User1 with 'Project Setup & Design' rights
     Given I click on the link labeled "User Rights"
@@ -342,6 +342,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
 
     # Repeating Events - Instance 2
     Given I click on the button labeled "Add new"
+    And I wait for 1 second
     When I click the bubble to add a record for the "Data Types" longitudinal instrument on event "(NEW)"
     Then I should see "Editing existing Record ID 2-1"
     And I should see "Data Types"
@@ -392,7 +393,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I check the checkbox labeled "If checked, arm names are suffixed with the arm ID"
     And I check the checkbox labeled "If checked, DAG names are suffixed with the DAG ID"
     And I click on the button labeled "Save"
-    Then I should see "Data Entry Log - v1.0.0"
+    Then I should see "Data Entry Log - v1.0.1"
 
     # Filtering
     When I click on the link labeled "Data Entry Log"
@@ -464,19 +465,19 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     # Disable external module in project
     Given I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
-    And I should see "Data Entry Log - v1.0.0"
+    And I should see "Data Entry Log - v1.0.1"
     When I click on the button labeled "Disable"
     Then I should see "Disable module?"
     When I click on the button labeled "Disable module"
-    Then I should NOT see "Data Entry Log - v1.0.0"
+    Then I should NOT see "Data Entry Log - v1.0.1"
 
     Given I click on the link labeled "Logging"
     Then I should see a table header and row containing the following values in the logging table:
       | Time / Date      | Username   | Action                                                                       | List of Data Changes OR Fields Exported                                                                                                                           |
-      | mm/dd/yyyy hh:mm | test_admin | Disable external module "data_entry_log_v1.0.0" for project                  |                                                                                                                                                                   |
-      | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.0" for project | always-exclude-fields-with-regex, display-event-id-with-event-name, display-arm-id-with-arm-name, display-dag-id-with-dag-name                                    |
-      | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.0" for project | reserved-hide-from-non-admins-in-project-list, max-days-all-records, display-event-id-with-event-name, display-arm-id-with-arm-name, display-dag-id-with-dag-name |
-      | mm/dd/yyyy hh:mm | test_admin | Enable external module "data_entry_log_v1.0.0" for project                   |                                                                                                                                                                   |
+      | mm/dd/yyyy hh:mm | test_admin | Disable external module "data_entry_log_v1.0.1" for project                  |                                                                                                                                                                   |
+      | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.1" for project | always-exclude-fields-with-regex, display-event-id-with-event-name, display-arm-id-with-arm-name, display-dag-id-with-dag-name                                    |
+      | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.1" for project | reserved-hide-from-non-admins-in-project-list, max-days-all-records, display-event-id-with-event-name, display-arm-id-with-arm-name, display-dag-id-with-dag-name |
+      | mm/dd/yyyy hh:mm | test_admin | Enable external module "data_entry_log_v1.0.1" for project                   |                                                                                                                                                                   |
 
     # Disable external module in Control Center
     Given I click on the link labeled "Control Center"
@@ -484,7 +485,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I click on the button labeled "Disable"
     Then I should see "Disable module?"
     When I click on the button labeled "Disable module"
-    Then I should NOT see "Data Entry Log - v1.0.0"
+    Then I should NOT see "Data Entry Log - v1.0.1"
 
     # Not checking 'Delete Version' for now as this is used for deleting lower versions.
     # If the entire EM is deleted REDCap throws an error
@@ -492,11 +493,11 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     Given I click on the link labeled "User Activity Log"
     Then I should see a table header and row containing the following values in a table:
       | Time             | User       | Event                                                                        |
-      | mm/dd/yyyy hh:mm | test_admin | Disable external module "data_entry_log_v1.0.0" for system                   |
-      | mm/dd/yyyy hh:mm | test_admin | Disable external module "data_entry_log_v1.0.0" for project                  |
-      | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.0" for project |
-      | mm/dd/yyyy hh:mm | test_admin | Enable external module "data_entry_log_v1.0.0" for project                   |
-      | mm/dd/yyyy hh:mm | test_admin | Enable external module "data_entry_log_v1.0.0" for system                    |
+      | mm/dd/yyyy hh:mm | test_admin | Disable external module "data_entry_log_v1.0.1" for system                   |
+      | mm/dd/yyyy hh:mm | test_admin | Disable external module "data_entry_log_v1.0.1" for project                  |
+      | mm/dd/yyyy hh:mm | test_admin | Modify configuration for external module "data_entry_log_v1.0.1" for project |
+      | mm/dd/yyyy hh:mm | test_admin | Enable external module "data_entry_log_v1.0.1" for project                   |
+      | mm/dd/yyyy hh:mm | test_admin | Enable external module "data_entry_log_v1.0.1" for system                    |
 
     And I logout
 

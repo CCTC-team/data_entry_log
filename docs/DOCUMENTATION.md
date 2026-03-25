@@ -54,7 +54,7 @@ The Data Entry Log module is a REDCap External Module that provides enhanced dat
 ## File Structure
 
 ```
-data_entry_log_v1.0.0/
+data_entry_log_v1.0.1/
 ├── config.json              # Module configuration and settings
 ├── DataEntryLogModule.php   # Main module class with hooks
 ├── index.php                # Main UI page

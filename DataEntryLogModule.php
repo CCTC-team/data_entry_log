@@ -46,13 +46,17 @@ class DataEntryLogModule extends AbstractExternalModule {
 
     public function redcap_module_system_enable($version): void
     {
+        $this->log('Module system enable initiated', ['version' => $version]);
         $this->dropAllDELogObjects();
         $this->createAllDELogObjects();
+        $this->log('Database objects created successfully');
     }
 
     public function redcap_module_system_disable($version): void
     {
+        $this->log('Module system disable initiated', ['version' => $version]);
         $this->dropAllDELogObjects();
+        $this->log('Database objects dropped successfully');
     }
 
     /**

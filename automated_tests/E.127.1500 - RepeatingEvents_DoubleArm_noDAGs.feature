@@ -25,7 +25,7 @@ Feature: E.127.1500 - RepeatingEvents_DoubleArm_noDAGS
     Then I should see "Data Entry Log - v1.0.1"
  
   Scenario: Enable external module in project
-    Given I create a new project named "E.127.1500" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/redcap_val/ProjectTypes/RepeatingEvents_DoubleArm_noDAGS.xml", and clicking the "Create Project" button
+    Given I create a new project named "E.127.1500" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/ProjectTypes/RepeatingEvents_DoubleArm_noDAGs.xml", and clicking the "Create Project" button
     When I click on the link labeled "DAGs"
     Then I should NOT see "DAG1"
     And I click on the link labeled "Manage"

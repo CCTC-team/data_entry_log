@@ -25,7 +25,7 @@ Feature: E.127.2400 - RepeatingInstruments_SingleArm_withDAGs
     Then I should see "Data Entry Log - v1.0.1"
  
   Scenario: Enable external module in project
-    Given I create a new project named "E.127.2400" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/ProjectTypes/RepeatingInstruments_SingleArm_withDAGs.xml", and clicking the "Create Project" button
+    Given I create a new project named "E.127.2400" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/redcap_val/ProjectTypes/RepeatingInstruments_SingleArm_withDAGs.xml", and clicking the "Create Project" button
     And I click on the link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"

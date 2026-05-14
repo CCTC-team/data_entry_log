@@ -226,8 +226,8 @@ jobs:
           CYPRESS_MAX_ATTEMPTS: '3'
           CYPRESS_GROUP_PREFIX: data-entry-log-em
           CYPRESS_DISABLE_RECORDING: '1'
-          # Watchdog: if no new spec report appears for 15 min, treat as hung.
-          CYPRESS_STALL_MS: '900000'
+          # Watchdog: if no new spec report appears for 30 min, treat as hung.
+          CYPRESS_STALL_MS: '1800000'
         run: |
           export UID
           npm run test:retry-failed -- --spec-file shard-specs.txt

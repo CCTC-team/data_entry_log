@@ -14,8 +14,6 @@ on:
 env:
   CCTC_DOCKER_BRANCH: "redcap_val"
   CYPRESS_BRANCH: "redcap_val"
-  RSVC_BRANCH: "redcap_val"
-  RCTF_BRANCH: "redcap_val"
   EM_NAME: "data_entry_log"
   EM_VERSION: "v1.0.1"
 
@@ -171,18 +169,19 @@ jobs:
           echo "=== cypress.env.json ==="
           cat cypress.env.json
 
-      - name: Update package.json dependencies for CCTC-team repositories
-        working-directory: redcap_cypress
-        run: |
-          sed -i 's|"rctf": "github:vanderbilt-redcap/rctf#[^"]*"|"rctf": "github:CCTC-team/rctf#${{ env.RCTF_BRANCH }}"|' package.json
-          sed -i 's|"redcap_rsvc": "github:vanderbilt-redcap/redcap_rsvc#[^"]*"|"redcap_rsvc": "github:CCTC-team/vanderbilt_redcap_rsvc#${{ env.RSVC_BRANCH }}"|' package.json
-          sed -i 's|"url": "https://github.com/vanderbilt-redcap/redcap_cypress.git"|"url": "https://github.com/CCTC-team/redcap_cypress.git"|' package.json
-
       - name: Install Cypress and dependencies
         working-directory: redcap_cypress
         run: |
-          npm install
-          npm run redcap_rsvc:install || echo "RSVC install failed or not needed"
+          # npm ci installs exactly the committed package-lock.json (deterministic,
+          # matched esbuild) instead of `npm install` + `redcap_rsvc:install`, whose
+          # `clean` deleted package-lock.json and reinstalled lockless — that drift
+          # caused esbuild's "Expected id 3 but got id 2" crash at config load.
+          npm ci
+          # move_files copies redcap_rsvc/Files fixtures into cypress/fixtures (most
+          # fixtures live in redcap_rsvc, not the EM repo). Non-destructive half of
+          # redcap_rsvc:install — keeps the lockfile. Without it cypress/fixtures is
+          # empty and specs hang until the stall watchdog kills CI.
+          npm run redcap_rsvc:move_files
 
       - name: Patch rctf after:run handler
         working-directory: redcap_cypress

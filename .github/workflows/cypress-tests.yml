@@ -11,6 +11,12 @@ on:
       - 'docs/**'
   workflow_dispatch:
 
+# Cancel an in-progress run when a newer commit is pushed to the same ref, so
+# stacked pushes don't each consume a full run of Actions minutes.
+concurrency:
+  group: cypress-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   CCTC_DOCKER_REF: "v1.0.0"
   CYPRESS_REF: "cctc_v1.0.2"
@@ -58,6 +64,17 @@ jobs:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: redcap_cypress/package-lock.json
+
+      - name: Cache Cypress binary
+        # setup-node caches npm *packages* but not the (~hundreds of MB) Cypress
+        # binary, which npm ci re-downloads every run. Cache it keyed on the
+        # lockfile so it's restored instead of re-downloaded.
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-binary-${{ runner.os }}-${{ hashFiles('redcap_cypress/package-lock.json') }}
+          restore-keys: |
+            cypress-binary-${{ runner.os }}-
 
       - name: Clone CCTC_REDCap_Docker
         env:
@@ -234,16 +251,7 @@ jobs:
             redcap_cypress/cypress/results/json/*.json
             redcap_cypress/cypress/results/${{ env.EM_NAME }}_${{ env.EM_VERSION }}-test-report.json
             redcap_cypress/cypress/results/html/${{ env.EM_NAME }}_${{ env.EM_VERSION }}-test-report.html
-          retention-days: 30
-          if-no-files-found: warn
-
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ${{ env.EM_NAME }}_${{ env.EM_VERSION }}-cypress-videos
-          path: redcap_cypress/cypress/videos/
-          retention-days: 30
+          retention-days: 7
           if-no-files-found: warn
 
       - name: Upload Cypress screenshots
@@ -252,7 +260,7 @@ jobs:
         with:
           name: ${{ env.EM_NAME }}_${{ env.EM_VERSION }}-cypress-screenshots
           path: redcap_cypress/cypress/screenshots/
-          retention-days: 30
+          retention-days: 7
           if-no-files-found: warn
 
       - name: Cleanup
@@ -260,3 +268,43 @@ jobs:
         run: |
           cd CCTC_REDCap_Docker/redcap_docker
           docker compose down -v
+
+  # Prune Actions artifact storage: keep only the N most recent workflow runs'
+  # artifacts and delete everything older, to stay under the org's 2 GB Actions
+  # storage quota. Runs after the test job so the current run's artifacts
+  # already exist and are counted among the kept runs.
+  prune-artifacts:
+    needs: cypress-tests
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    env:
+      KEEP_RUNS: "2"   # keep the latest run + the one before it
+    steps:
+      - name: Delete artifacts from older runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          # Distinct run IDs that still have live artifacts, newest first
+          RUN_IDS=$(gh api "repos/${REPO}/actions/artifacts" --paginate \
+            --jq '.artifacts[] | select(.expired==false) | [.workflow_run.id, .created_at] | @tsv' \
+            | awk -F'\t' '{ if($2>seen[$1]) seen[$1]=$2 } END { for(r in seen) print seen[r]"\t"r }' \
+            | sort -r | awk -F'\t' '{print $2}')
+
+          KEEP_SET=$(echo "$RUN_IDS" | head -n "$KEEP_RUNS" | paste -sd, -)
+          echo "Keeping artifacts from runs: ${KEEP_SET:-<none>}"
+
+          gh api "repos/${REPO}/actions/artifacts" --paginate \
+            --jq '.artifacts[] | select(.expired==false) | [.workflow_run.id, .id, .name] | @tsv' \
+            | while IFS=$'\t' read -r runid artid name; do
+                case ",$KEEP_SET," in
+                  *",$runid,"*) ;;  # within the keep window — leave it
+                  *)
+                    echo "Deleting $name (run $runid, artifact $artid)"
+                    gh api -X DELETE "repos/${REPO}/actions/artifacts/${artid}" \
+                      && echo "  ok" || echo "  failed (continuing)"
+                    ;;
+                esac
+              done

@@ -82,4 +82,67 @@ class DataEntryLogModule extends AbstractExternalModule {
         $this->execFromFile("0030__create_GetDeleteParts_function.sql");
         $this->execFromFile("0100__create_DataEntryLog_proc.sql");
     }
+
+    public function redcap_module_save_configuration($project_id): void
+    {
+        $this->auditConfigurationChange($project_id);
+    }
+
+    private function auditConfigurationChange($project_id): void
+    {
+        $config   = $this->getConfig();
+        $isSystem = empty($project_id);
+        $scope    = $isSystem ? 'system' : 'project';
+        $keys     = $this->collectSettingKeys($config[$scope . '-settings'] ?? []);
+        if (empty($keys)) return;
+
+        $snapshotKey = 'audit-snapshot-' . $scope;
+        $read  = fn($k)     => $isSystem ? $this->getSystemSetting($k)    : $this->getProjectSetting($k);
+        $write = fn($k, $v) => $isSystem ? $this->setSystemSetting($k, $v) : $this->setProjectSetting($k, $v);
+
+        $new = [];
+        foreach ($keys as $k) $new[$k] = $this->normaliseSetting($read($k));
+
+        $rawOld = $read($snapshotKey);
+        $old = is_string($rawOld) ? json_decode($rawOld, true) : null;
+        // First save has no prior snapshot: treat the baseline as empty so the
+        // initial configuration's real values are still logged ((empty) -> value),
+        // while settings left blank stay '' vs '' and produce no noise.
+        if (!is_array($old)) $old = [];
+
+        $changed = false;
+        foreach ($keys as $k) {
+            $before = $this->normaliseSetting($old[$k] ?? null);
+            $after  = $new[$k];
+            if ($before !== $after) {
+                $changed = true;
+                $this->log("Configuration changed ($scope)", [
+                    'project_id' => $project_id,
+                    'setting'    => $k,
+                    'old_value'  => $before === '' ? '(empty)' : $before,
+                    'new_value'  => $after  === '' ? '(empty)' : $after,
+                ]);
+            }
+        }
+        if ($changed) $write($snapshotKey, json_encode($new));
+    }
+
+    private function collectSettingKeys(array $settings): array
+    {
+        $keys = [];
+        foreach ($settings as $s) {
+            if (!isset($s['key'])) continue;
+            if (($s['type'] ?? '') === 'descriptive') continue;
+            $keys[] = $s['key'];
+        }
+        return $keys;
+    }
+
+    private function normaliseSetting($v): string
+    {
+        if ($v === null || $v === false) return '';
+        if ($v === true) return '1';
+        if (is_array($v)) return json_encode($v);
+        return trim((string) $v);
+    }
 }

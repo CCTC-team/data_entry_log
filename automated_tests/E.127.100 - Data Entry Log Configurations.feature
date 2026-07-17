@@ -8,14 +8,14 @@ Feature: E.127.100 - The system shall support the ability to enable/disable Data
     When I click on the link labeled "Control Center"
     And I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
-    And I should NOT see "Data Entry Log - v1.0.1"
+    And I should NOT see "Data Entry Log - v1.1.0"
     When I click on the button labeled "Enable a module"
     And I wait for 2 seconds
     Then I should see "Available Modules"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log"
     And I wait for 1 second
     And I click on the button labeled "Enable"
-    Then I should see "Data Entry Log - v1.0.1"
+    Then I should see "Data Entry Log - v1.1.0"
 
     When I click on the link labeled "View Logs"
     Then I should see "External Module Logs"
@@ -38,7 +38,7 @@ Feature: E.127.100 - The system shall support the ability to enable/disable Data
     And I click on the button labeled "Disable"
     Then I should see "Disable module?"
     When I click on the button labeled "Disable module"
-    Then I should NOT see "Data Entry Log - v1.0.1"
+    Then I should NOT see "Data Entry Log - v1.1.0"
 
     When I click on the link labeled "View Logs"
     Then I should see "External Module Logs"

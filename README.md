@@ -40,6 +40,14 @@ The following project level settings are available;
 - `display-arm-id-with-arm-name` - when checked, the arm names are shown with an arm id suffix rather just name
     i.e. 'Arm 2 [2]' rather than simple 'Arm 2'
 
+##### Configuration audit log
+
+Every change to the module's configuration is recorded to the module's **View Logs** page (Control Center →
+External Modules → View Logs). One entry is written per changed setting, recording the setting name, its old and
+new values, the user who made the change and when. The first save on a freshly configured module logs the values
+that were actually set (as `(empty) -> value`); settings left blank are not logged. Old and new values are held as
+log parameters, which REDCap shows to super-users via the **Show Parameters** button.
+
 #### Usage
 
 - the module is only available to users who have the logging module permission (always available to superadmin)
@@ -93,7 +101,7 @@ The module ships with a CI workflow at [.github/workflows/cypress-tests.yml](.gi
 
 **Follow-on jobs**
 - `prune-artifacts` — deletes artifacts from older runs, keeping only the latest 2.
-- `publish-report` — merges the run's mochawesome JSON into one combined HTML report and publishes it to GitHub Pages (report named `data_entry_log_v1.1.1.html`, also served at the Pages root as `index.html`).
+- `publish-report` — merges the run's mochawesome JSON into one combined HTML report and publishes it to GitHub Pages **per module version**: the report for this run lands at `/<EM_VERSION>/index.html` (e.g. `/v1.1.1/`) and the Pages root serves an index linking every published version, newest first. Previously published versions are preserved by restoring the cumulative site from the `pages-store` branch before the new version is added and the snapshot force-pushed back.
 
 **Required repository secrets**
 - `CCTC_TEAM_PAT` — PAT with `read:packages` for the private `redcap-aio` / `cypress-runner-aio` GHCR images.

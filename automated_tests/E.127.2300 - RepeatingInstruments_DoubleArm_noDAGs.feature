@@ -28,7 +28,7 @@ Feature: E.127.2300 - RepeatingInstruments_DoubleArm_noDAGs
     Given I create a new project named "E.127.2300" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/ProjectTypes/RepeatingInstruments_DoubleArm_noDAGs.xml", and clicking the "Create Project" button
     When I click on the link labeled "DAGs"
     Then I should NOT see "DAG1"
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.1.1"
@@ -175,7 +175,7 @@ Feature: E.127.2300 - RepeatingInstruments_DoubleArm_noDAGs
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.2300"
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.1.1"
     When I click on the button labeled "Disable"

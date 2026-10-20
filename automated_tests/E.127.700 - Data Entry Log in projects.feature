@@ -26,7 +26,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
  
   Scenario: Enable external module in project
     Given I create a new project named "E.127.700" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.1.1"
@@ -103,7 +103,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.700"
     Then I should see "Project Home and Design"
-    When I click on the link labeled "Manage"
+    When I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     # E.127.1100 - Only Super-admins can configure external Module in project
     # And I should NOT see the button labeled "Disable"
@@ -383,7 +383,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.700"
-    When I click on the link labeled "Manage"
+    When I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I click on the button labeled "Configure"
     # E.127.800, E.127.900,E.127.1000
@@ -463,7 +463,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
 
   Scenario: E.127.100 - Disable external module
     # Disable external module in project
-    Given I click on the link labeled "Manage"
+    Given I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.1.1"
     When I click on the button labeled "Disable"

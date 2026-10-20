@@ -20,7 +20,7 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
 
   Scenario: First configuration save logs the initial values
     Given I create a new project named "E.127.3100" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.1.1"
@@ -55,8 +55,8 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                        |
       | setting   | display-arm-id-with-arm-name |
-      | old_value | (empty)                      |
       | new_value | 1                            |
+      | old_value | (empty)                      |
     And I click on the button labeled "Close"
     Then I should see "External Module Logs"
 
@@ -65,8 +65,8 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                            |
       | setting   | always-exclude-fields-with-regex |
-      | old_value | (empty)                          |
       | new_value | @EXCLUDE-ME                      |
+      | old_value | (empty)                          |
 
   Scenario: Changing a setting logs an old->new audit entry
     # rctf starts each scenario from a clean browser page, so re-navigate to the
@@ -74,7 +74,7 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.3100"
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.1.1"
 
@@ -101,8 +101,8 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                            |
       | setting   | always-exclude-fields-with-regex |
-      | old_value | @EXCLUDE-ME                      |
       | new_value | @EXCLUDE-ALL                     |
+      | old_value | @EXCLUDE-ME                      |
     And I click on the button labeled "Close"
     Then I should see "External Module Logs"
 

@@ -35,7 +35,7 @@ Scenario: E.127.300 - Make module discoverable by users
     
     Given I login to REDCap with the user "Test_User1"
     When I create a new project named "E.127.300" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should NOT see "Data Entry Log - v1.1.1"
 
@@ -74,7 +74,7 @@ Scenario: E.127.300 - Make module discoverable by users
     # Given I login to REDCap with the user "Test_User1"
     # When I click on the link labeled "My Projects"
     # And I click on the link labeled "E.127.300"
-    # And I click on the link labeled "Manage"
+    # And I click on the second link labeled "Manage"
     # Then I should see "External Modules - Project Module Manager"
     # And I should see "Data Entry Log - v1.1.1"
     # And I should see "Discoverable"

@@ -26,7 +26,7 @@ Feature: E.127.2000 - NonRepeating_SingleArm_withDAGs
  
   Scenario: Enable external module in project
     Given I create a new project named "E.127.2000" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/ProjectTypes/NonRepeating_SingleArm_withDAGs.xml", and clicking the "Create Project" button
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.1.1"
@@ -159,7 +159,7 @@ Feature: E.127.2000 - NonRepeating_SingleArm_withDAGs
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.2000"
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     And I should see "Data Entry Log - v1.1.1"
     When I click on the button labeled "Disable"

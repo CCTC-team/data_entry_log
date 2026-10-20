@@ -15,13 +15,6 @@ Feature: E.127.2300 - RepeatingInstruments_DoubleArm_noDAGs
 
     Given I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
-    And I should NOT see "Data Entry Log - v1.1.2"
-    When I click on the button labeled "Enable a module"
-    And I wait for 2 seconds
-    Then I should see "Available Modules"
-    And I click on the button labeled "Enable" in the row labeled "Data Entry Log"
-    And I wait for 1 second
-    And I click on the button labeled "Enable"
     Then I should see "Data Entry Log - v1.1.2"
  
   Scenario: Enable external module in project

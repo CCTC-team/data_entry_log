@@ -9,7 +9,10 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     When I click on the link labeled "Control Center"
     And I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
-    And I should NOT see "Data Entry Log - v1.1.2"
+    And I click on the button labeled "Disable"
+    Then I should see "Disable module?"
+    When I click on the button labeled "Disable module"
+    Then I should NOT see "Data Entry Log - v1.1.2"
     When I click on the button labeled "Enable a module"
     And I wait for 2 seconds
     Then I should see "Available Modules"

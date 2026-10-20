@@ -4,7 +4,7 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
   I want every configuration change to be written to the module's External Module Logs
   So that there is an audit trail of who changed which setting, when, and from what value to what.
 
-  Scenario: Verify external module is enabled in Control Center
+  Scenario: Enable external module from Control Center
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "Control Center"
     And I click on the link labeled "Manage"

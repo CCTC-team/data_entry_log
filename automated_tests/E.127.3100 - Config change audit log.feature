@@ -58,7 +58,11 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                        |
       | setting   | display-arm-id-with-arm-name |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                        |
       | new_value | 1                            |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                        |
       | old_value | (empty)                      |
     And I click on the button labeled "Close"
     Then I should see "External Module Logs"
@@ -68,7 +72,11 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                            |
       | setting   | always-exclude-fields-with-regex |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
       | new_value | @EXCLUDE-ME                      |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
       | old_value | (empty)                          |
 
   Scenario: Changing a setting logs an old->new audit entry
@@ -104,7 +112,11 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                            |
       | setting   | always-exclude-fields-with-regex |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
       | new_value | @EXCLUDE-ALL                     |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
       | old_value | @EXCLUDE-ME                      |
     And I click on the button labeled "Close"
     Then I should see "External Module Logs"

@@ -9,22 +9,25 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     When I click on the link labeled "Control Center"
     And I click on the link labeled "Manage"
     Then I should see "External Modules - Module Manager"
-    And I should NOT see "Data Entry Log - v1.1.1"
+    And I click on the button labeled "Disable"
+    Then I should see "Disable module?"
+    When I click on the button labeled "Disable module"
+    Then I should NOT see "Data Entry Log - v1.1.2"
     When I click on the button labeled "Enable a module"
     And I wait for 2 seconds
     Then I should see "Available Modules"
     And I click on the button labeled "Enable" in the row labeled "Data Entry Log"
     And I wait for 1 second
     And I click on the button labeled "Enable"
-    Then I should see "Data Entry Log - v1.1.1"
+    Then I should see "Data Entry Log - v1.1.2"
 
   Scenario: First configuration save logs the initial values
     Given I create a new project named "E.127.3100" by clicking on "New Project" in the menu bar, selecting "Practice / Just for fun" from the dropdown, choosing file "fixtures/cdisc_files/Project_redcap_val_nodata.xml", and clicking the "Create Project" button
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
     When I click on the button labeled "Enable a module"
-    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.1.1"
-    Then I should see "Data Entry Log - v1.1.1"
+    And I click on the button labeled "Enable" in the row labeled "Data Entry Log - v1.1.2"
+    Then I should see "Data Entry Log - v1.1.2"
 
     # First save has no prior snapshot, so each setting the admin actually sets is
     # logged as (empty) -> value. Blank settings stay empty and are not logged.
@@ -36,7 +39,7 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     When I check the checkbox labeled "If checked, arm names are suffixed with the arm ID e.g. 'Arm 1 [1]' rather than simply 'Arm 1'"
     And I enter "@EXCLUDE-ME" into the textarea field labeled "When given, any fields matching the given regex will always be excluded from the list of data entry logs"
     Then I click on the button labeled "Save"
-    And I should see "Data Entry Log - v1.1.1"
+    And I should see "Data Entry Log - v1.1.2"
 
     #VERIFY - the audit trail on the module's own View Logs page
     When I click on the link labeled "View Logs"
@@ -55,8 +58,12 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                        |
       | setting   | display-arm-id-with-arm-name |
-      | old_value | (empty)                      |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                        |
       | new_value | 1                            |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                        |
+      | old_value | (empty)                      |
     And I click on the button labeled "Close"
     Then I should see "External Module Logs"
 
@@ -65,8 +72,12 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                            |
       | setting   | always-exclude-fields-with-regex |
-      | old_value | (empty)                          |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
       | new_value | @EXCLUDE-ME                      |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
+      | old_value | (empty)                          |
 
   Scenario: Changing a setting logs an old->new audit entry
     # rctf starts each scenario from a clean browser page, so re-navigate to the
@@ -74,9 +85,9 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     Given I login to REDCap with the user "Test_Admin"
     When I click on the link labeled "My Projects"
     And I click on the link labeled "E.127.3100"
-    And I click on the link labeled "Manage"
+    And I click on the second link labeled "Manage"
     Then I should see "External Modules - Project Module Manager"
-    And I should see "Data Entry Log - v1.1.1"
+    And I should see "Data Entry Log - v1.1.2"
 
     # Change the exclude-regex from "@EXCLUDE-ME" to "@EXCLUDE-ALL". This is a genuine
     # value -> value transition, proving the snapshot/diff works across saves (not just
@@ -85,7 +96,7 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     Then I should see "Configure Module"
     And I clear field and enter "@EXCLUDE-ALL" into the textarea field labeled "When given, any fields matching the given regex will always be excluded from the list of data entry logs"
     Then I click on the button labeled "Save"
-    And I should see "Data Entry Log - v1.1.1"
+    And I should see "Data Entry Log - v1.1.2"
 
     #VERIFY - the audit trail on the module's own View Logs page
     When I click on the link labeled "View Logs"
@@ -101,8 +112,12 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I should see a table header and row containing the following values in a table:
       | Name      | Value                            |
       | setting   | always-exclude-fields-with-regex |
-      | old_value | @EXCLUDE-ME                      |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
       | new_value | @EXCLUDE-ALL                     |
+    And I should see a table header and row containing the following values in a table:
+      | Name      | Value                            |
+      | old_value | @EXCLUDE-ME                      |
     And I click on the button labeled "Close"
     Then I should see "External Module Logs"
 
@@ -113,7 +128,7 @@ Feature: E.127.3100 - The system shall record configuration changes for the Data
     And I click on the button labeled "Disable"
     Then I should see "Disable module?"
     When I click on the button labeled "Disable module"
-    Then I should NOT see "Data Entry Log - v1.1.1"
+    Then I should NOT see "Data Entry Log - v1.1.2"
 
     # Verify no exceptions are thrown in the system
     Given I open Email

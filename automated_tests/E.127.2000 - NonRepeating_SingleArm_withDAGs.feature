@@ -145,12 +145,12 @@ Feature: E.127.2000 - NonRepeating_SingleArm_withDAGs
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Group | Event   | Instance | Form            | Field and Label                           | New Value         | Action        |
-      | test_user2 | 2-1       | DAG2  | Event 2 |          | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
-      | test_user2 | 2-1       | DAG2  | Event 2 |          | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
       | test_user2 | 2-1       | DAG2  | Event 2 |          | data_types      | data_types_crfver [CRF Versioning]        | 2                 | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 2 |          | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 2 |          | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 |          | data_types      | ptname [Name]                             | User 2            | Create record |
-      | test_user2 | 2-1       | DAG2  | Event 1 |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 |          | data_types      | checkbox [Checkbox]                       | item[3] checked   | Create record |
+      | test_user2 | 2-1       | DAG2  | Event 1 |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
 
     And I should see 6 rows in the data entry log table
     And I should NOT see "test_user1"

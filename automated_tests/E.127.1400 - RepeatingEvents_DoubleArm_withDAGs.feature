@@ -132,7 +132,7 @@ Feature: E.127.1400 - RepeatingEvents_DoubleArm_withDAGs
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Group | Arm   | Instance | Form            | Field and Label                                        | New Value         | Action        |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | notesbox [Notes Box]	                                 | Notes             | Update record |
-      | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | file_upload [File Upload]                              | 2                 | Update record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | file_upload [File Upload]                              | 1                 | Update record |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | data_types_complete [Complete?]	                       | 0                 | Update record |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 2        | data_types	    | radio_button_manual [Radio Button Manual]              | 9..9              | Update record |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 2        | data_types	    | data_types_complete [Complete?]	                       | 2                 | Update record |
@@ -186,11 +186,11 @@ Feature: E.127.1400 - RepeatingEvents_DoubleArm_withDAGs
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 3        | text_validation | text_validation_crfver [CRF Versioning]   | 2                 | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 3        | text_validation | email_v2 [Email]	                        | testuser2@abc.com | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 3        | text_validation | text_validation_complete [Complete?]      | 0                 | Update record |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types      | ptname [Name]                             | User 2            | Create record |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types      | checkbox [Checkbox]                       | item[3] checked   | Create record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
 
     And I should see 8 rows in the data entry log table
     And I should NOT see "test_user1"

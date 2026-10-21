@@ -126,12 +126,12 @@ Feature: E.127.1900 - NonRepeating_DoubleArm_noDAGs
     When I click on the link labeled "Data Entry Log"
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Event   | Arm     | Instance | Form            | Field and Label                           | New Value         | Action        |
-      | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
-      | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
       | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | data_types_crfver [CRF Versioning]        | 2                 | Update record |
+      | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
+      | test_user2 | 2         | Event 2 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Update record |
       | test_user2 | 2         | Event 1 | Arm Two |          | data_types      | ptname [Name]                             | User 2            | Create record |
-      | test_user2 | 2         | Event 1 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
       | test_user2 | 2         | Event 1 | Arm Two |          | data_types      | checkbox [Checkbox]                       | item[3] checked   | Create record |
+      | test_user2 | 2         | Event 1 | Arm Two |          | data_types      | data_types_complete [Complete?]	          | 0                 | Create record |
       | test_user1 | 1         | Event 2 | Arm 1   |          | data_types	    | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
       | test_user1 | 1         | Event 2 | Arm 1   |          | data_types	    | data_types_complete [Complete?]	          | 2                 | Update record |
       | test_user1 | 1         | Event 1 | Arm 1   |          | text_validation | text_validation_crfver [CRF Versioning]   | 1                 | Create record |

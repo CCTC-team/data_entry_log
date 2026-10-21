@@ -128,7 +128,7 @@ Feature: E.127.2200 - RepeatingInstruments_DoubleArm_withDAGs
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Group | Arm   | Instance | Form            | Field and Label                           | New Value         | Action        |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | notesbox [Notes Box]	                    | Notes             | Update record |
-      | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | file_upload [File Upload]                 | 2                 | Update record |
+      | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | file_upload [File Upload]                 | 1                 | Update record |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 3        | data_types	    | data_types_complete [Complete?]	          | 0                 | Update record |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 2        | data_types	    | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
       | test_user1 | 1-1       | DAG1  | Arm 1 | 2        | data_types	    | data_types_complete [Complete?]	          | 2                 | Update record |

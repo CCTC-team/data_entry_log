@@ -128,7 +128,7 @@ Feature: E.127.2600 - NonLongitudinal_RepeatingInstruments_withDAGS
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Group | Instance | Form            | Field and Label                           | New Value         | Action        |
       | test_user1 | 1-1       | DAG1  | 3        | data_types	    | notesbox [Notes Box]	                    | Notes             | Update record |
-      | test_user1 | 1-1       | DAG1  | 3        | data_types	    | file_upload [File Upload]                 | 2                 | Update record |
+      | test_user1 | 1-1       | DAG1  | 3        | data_types	    | file_upload [File Upload]                 | 1                 | Update record |
       | test_user1 | 1-1       | DAG1  | 3        | data_types	    | data_types_complete [Complete?]	          | 0                 | Update record |
       | test_user1 | 1-1       | DAG1  | 2        | data_types	    | radio_button_manual [Radio Button Manual] | 9..9              | Update record |
       | test_user1 | 1-1       | DAG1  | 2        | data_types	    | data_types_complete [Complete?]	          | 2                 | Update record |
@@ -174,8 +174,8 @@ Feature: E.127.2600 - NonLongitudinal_RepeatingInstruments_withDAGS
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Group | Instance | Form       | Field and Label                      | New Value         | Action        |
       | test_user2 | 2-1       | DAG2  | 3        | data_types | data_types_crfver [CRF Versioning]   | 2                 | Update record |
-      | test_user2 | 2-1       | DAG2  | 3        | data_types | data_types_complete [Complete?]      | 0                 | Update record |
       | test_user2 | 2-1       | DAG2  | 3        | data_types | notesbox [Notes Box]	                | Hello             | Update record |
+      | test_user2 | 2-1       | DAG2  | 3        | data_types | data_types_complete [Complete?]      | 0                 | Update record |
       | test_user2 | 2-1       | DAG2  | 2        | data_types | ptname [Name]  	                    | User2             | Update record |
       | test_user2 | 2-1       | DAG2  | 2        | data_types | data_types_complete [Complete?]      | 0                 | Update record |
       | test_user2 | 2-1       | DAG2  |          | data_types | data_types_crfver [CRF Versioning]   | 1                 | Create record |

@@ -290,13 +290,13 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     And I click on the link labeled "E.127.700"
     Given I click on the link labeled "Record Status Dashboard"
     And I click on the link labeled "1-2"
-    And I click on the icon in the column labeled "" and the row labeled "3"
+    And I click on the link in the column labeled "" and the row labeled "3"
     Then I clear the field labeled "Name"
     And I click on the button labeled "Save & Exit Form"
 
     Given I click on the link labeled "Record Status Dashboard"
     And I click on the link labeled "1-2"
-    And I click on the icon in the column labeled "" and the row labeled "1"
+    And I click on the link in the column labeled "" and the row labeled "1"
     Then I clear the field labeled "Name"
     And I click the "reset" link for the field labeled "Radio Button Auto"
     And I click on the button labeled "Save & Exit Form"
@@ -359,10 +359,10 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
       | Username   | Record ID | Group | Event   | Arm     | Instance | Form       | Field and Label                           | New Value       | Action        |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types | data_types_crfver [CRF Versioning]        | 1               | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types | ptname [Name]	                           | Test User1      | Update record |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types | data_types_complete [Complete?]	         | 0               | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types | radio_button_manual [Radio Button Manual] | 9..9            | Update record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types | required [Required]                       | 2001            | Update record |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_complete [Complete?]	         | 1               | Create record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two | 2        | data_types | data_types_complete [Complete?]	         | 0               | Update record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_crfver [CRF Versioning]       | 1               | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | ptname [Name]                             | User 2          | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_complete [Complete?]	         | 0               | Create record |
 
@@ -374,7 +374,7 @@ Feature: E.127.700 - The system shall support the ability to set up and view log
     When I select "Create record" on the dropdown field labeled "Action"
     Then I should see a table header and rows containing the following values in the a table:
       | Username   | Record ID | Group | Event   | Arm     | Instance | Form       | Field and Label                           | New Value       | Action        |
-      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_complete [Complete?]	         | 1               | Create record |
+      | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_crfver [CRF Versioning]       | 1               | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | ptname [Name]                             | User 2          | Create record |
       | test_user2 | 2-1       | DAG2  | Event 1 | Arm Two |          | data_types | data_types_complete [Complete?]	         | 0               | Create record |
 

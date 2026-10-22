@@ -11,12 +11,16 @@ The Data Entry Log module is a REDCap External Module that provides enhanced dat
 - Richard Hardy (University of Cambridge - Cambridge Cancer Trials Centre)
 - Mintoo Xavier (Cambridge University Hospital - Cambridge Cancer Trials Centre)
 
-## Compatibility
+## Tested With
 
-| Requirement | Version Range |
-|-------------|---------------|
-| PHP | 8.0.27 - 8.2.29 |
-| REDCap | 14.7.0 - 15.9.1 |
+The module has been tested with:
+
+| | Versions |
+|---|---|
+| PHP | 8.2 |
+| REDCap | 14.7.0, 15.5.36, 17.5.6 |
+
+`config.json` sets no PHP or REDCap version limits.
 
 ## Features
 

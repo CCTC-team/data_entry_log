@@ -6,6 +6,14 @@ $lang = Language::getLanguage('English');
 global $Proj;
 $project_id = $module->getProjectId();
 global $module;
+
+// This page is not a config.json link, so the framework does not run redcap_module_link_check_display()
+// for it. Run that check here, before any data is read, so the export follows the same rights as the log page.
+if (!$module->redcap_module_link_check_display($project_id, ['url' => 'index.php'])) {
+    http_response_code(403);
+    exit("You do not have permission to access this page.");
+}
+
 $modName = $module->getModuleDirectoryName();
 
 require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/DataEntryLogModule.php";
@@ -23,9 +31,10 @@ require_once APP_PATH_DOCROOT . "/Classes/DateTimeRC.php";
 use CCTC\DataEntryLogModule\GetDbData;
 use CCTC\DataEntryLogModule\DataEntryLogModule;
 use CCTC\DataEntryLogModule\InputValidator;
+use CCTC\DataEntryLogModule\Utility;
 
 // Maximum number of records to export at once (prevents memory/timeout issues)
-const MAX_EXPORT_RECORDS = 1000000;
+$maxExportRecords = 1000000;
 
 // Increase memory limit in case needed for intensive processing
 //System::increaseMemory(2048);
@@ -64,7 +73,7 @@ $exportType = InputValidator::getEnumParam('export_type', $allowedExportTypes, '
 //change paging to include everything
 if($exportType == 'all_pages' || $exportType == 'everything') {
     $skipCount = 0;
-    $pageSize = MAX_EXPORT_RECORDS;
+    $pageSize = $maxExportRecords;
 }
 
 //set all filters to null
@@ -108,7 +117,8 @@ $headers = array("timestamp","user name","record","group id", "group name", "eve
     "reason for change", "action");
 
 // Set file name and path
-$filename = APP_PATH_TEMP . date("YmdHis") . '_' . PROJECT_ID . '_data_entry_logs.csv';
+// The random part stops two exports in the same second from sharing a file
+$filename = APP_PATH_TEMP . date("YmdHis") . '_' . PROJECT_ID . '_' . bin2hex(random_bytes(8)) . '_data_entry_logs.csv';
 
 // Begin writing file from query result
 $fp = fopen($filename, 'w');
@@ -120,7 +130,7 @@ if ($fp && $result)
         $delim = User::getCsvDelimiter();
 
         // Write headers to file
-        fputcsv($fp, $headers, $delim);
+        fputcsv($fp, $headers, $delim, '"', '\\');
 
         // Set values for this row and write to file
         foreach ($result["dataChanges"] as $dc) {
@@ -148,7 +158,7 @@ if ($fp && $result)
             $row["reason for change"] = $dc->reason;
             $row["action"] = $dc->description;
 
-            fputcsv($fp, $row, $delim);
+            fputcsv($fp, array_map([Utility::class, 'CsvSafe'], $row), $delim, '"', '\\');
         }
 
         // Close file for writing
@@ -174,6 +184,9 @@ if ($fp && $result)
         Logging::logEvent("", Logging::getLogEventTable($project_id),"MANAGE",$project_id,"project_id = $project_id", "Export data entry logging (custom)");
 
     } catch (Exception $e) {
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
         $module->log("ex: ". $e->getMessage());
     }
 }

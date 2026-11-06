@@ -19,10 +19,26 @@ class Utility {
 
         if($instance !== null)
         {
-            $instance = "&instance=" . $instance;
+            $instance = "&instance=" . rawurlencode((string)$instance);
         }
 
-        return "<a href='{$baseUrl}DataEntry/index.php?pid={$projectId}&id={$recordId}&event_id={$eventId}&page={$formName}{$instance}&fldfocus={$fldName}#{$fldName}-tr'>{$val}</a>";
+        $query = "pid=" . rawurlencode((string)$projectId) . "&id=" . rawurlencode((string)$recordId)
+            . "&event_id=" . rawurlencode((string)$eventId) . "&page=" . rawurlencode((string)$formName);
+        $field = rawurlencode((string)$fldName);
+
+        return "<a href='{$baseUrl}DataEntry/index.php?{$query}{$instance}&fldfocus={$field}#{$field}-tr'>{$val}</a>";
+    }
+
+    // stops a value being run as a formula when a CSV export is opened in a spreadsheet, by adding a leading
+    // space to text starting with a formula character. Numbers such as -5 are left as they are
+    public static function CsvSafe($value)
+    {
+        if ($value === null || is_numeric($value)) {
+            return $value;
+        }
+
+        $text = (string)$value;
+        return in_array(substr($text, 0, 1), ['=', '+', '-', '@', "\t", "\r"], true) ? " $text" : $text;
     }
 
     // groups an array

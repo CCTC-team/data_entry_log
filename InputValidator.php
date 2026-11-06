@@ -11,9 +11,9 @@ class InputValidator
      * Sanitizes a string input by trimming whitespace and removing null bytes.
      * Returns the default value if input is not set or empty.
      */
-    public static function sanitizeString(?string $value, string $default = ""): string
+    public static function sanitizeString($value, string $default = ""): string
     {
-        if ($value === null || $value === "") {
+        if (!is_string($value) || $value === "") {
             return $default;
         }
         // Remove null bytes and trim whitespace
@@ -24,9 +24,9 @@ class InputValidator
     /**
      * Sanitizes a string input, returning null if empty.
      */
-    public static function sanitizeStringOrNull(?string $value): ?string
+    public static function sanitizeStringOrNull($value): ?string
     {
-        if ($value === null || $value === "") {
+        if (!is_string($value) || $value === "") {
             return null;
         }
         return str_replace("\0", "", trim($value));
@@ -80,23 +80,26 @@ class InputValidator
 
     /**
      * Validates a value against a whitelist of allowed values.
-     * Returns the default if the value is not in the allowed list.
+     * Returns the matching entry from the list, never the input itself,
+     * or the default if the value is not in the allowed list.
      */
-    public static function validateEnum(?string $value, array $allowedValues, string $default): string
+    public static function validateEnum($value, array $allowedValues, string $default): string
     {
-        if ($value === null || !in_array($value, $allowedValues, true)) {
-            return $default;
+        foreach ($allowedValues as $allowedValue) {
+            if ($value === $allowedValue) {
+                return $allowedValue;
+            }
         }
-        return $value;
+        return $default;
     }
 
     /**
      * Validates a date string matches the expected format.
      * Returns null if the date is invalid.
      */
-    public static function validateDateString(?string $value, string $format): ?string
+    public static function validateDateString($value, string $format): ?string
     {
-        if ($value === null || $value === "") {
+        if (!is_string($value) || $value === "") {
             return null;
         }
 

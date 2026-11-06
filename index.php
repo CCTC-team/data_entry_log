@@ -11,6 +11,7 @@ require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/DataChange.php";
 require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/Utility.php";
 require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/Rendering.php";
 require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/GetDbData.php";
+require_once dirname(APP_PATH_DOCROOT, 1) . "/modules/$modName/InputValidator.php";
 
 require_once APP_PATH_DOCROOT . "/Classes/Records.php";
 require_once APP_PATH_DOCROOT . "/Classes/RCView.php";
@@ -19,6 +20,7 @@ require_once APP_PATH_DOCROOT . "/Classes/DateTimeRC.php";
 use CCTC\DataEntryLogModule\GetDbData;
 use CCTC\DataEntryLogModule\Utility;
 use CCTC\DataEntryLogModule\Rendering;
+use CCTC\DataEntryLogModule\InputValidator;
 
 $projId = $module->getProjectId();
 //there's probably a better way of getting these from $module
@@ -65,90 +67,52 @@ $oneMonthAgo = Utility::NowAdjusted('-1 months');
 $oneYearAgo = Utility::NowAdjusted('-1 years');
 
 //get form values
-$recordId = "";
-if (isset($_GET['record_id'])) {
-    $recordId = $_GET['record_id'];
-}
+$recordId = InputValidator::getStringParam('record_id', "");
 
+//dates keep what the user typed so that a cleared date means no limit; DateStringToDbFormat parses them for the query
 $minDate = $oneWeekAgo;
 if (isset($_GET['startdt'])) {
-    $minDate = $_GET['startdt'];
+    $minDate = InputValidator::sanitizeString($_GET['startdt']);
 }
 $maxDate = null;
 if (isset($_GET['enddt'])) {
-    $maxDate = $_GET['enddt'];
+    $maxDate = InputValidator::sanitizeString($_GET['enddt']);
 }
 
 //set the default to one week
-$defaultTimeFilter = "oneweekago";
-$customActive = "";
-$dayActive = "";
-$weekActive = "active";
-$monthActive = "";
-$yearActive = "";
-if (isset($_GET['defaulttimefilter'])) {
-    $defaultTimeFilter = $_GET['defaulttimefilter'];
-    $customActive = $defaultTimeFilter == "customrange" ? "active" : "";
-    $dayActive = $defaultTimeFilter == "onedayago" ? "active" : "";
-    $weekActive = $defaultTimeFilter == "oneweekago" ? "active" : "";
-    $monthActive = $defaultTimeFilter == "onemonthago" ? "active" : "";
-    $yearActive = $defaultTimeFilter == "oneyearago" ? "active" : "";
-}
+$allowedTimeFilters = ['customrange', 'onedayago', 'oneweekago', 'onemonthago', 'oneyearago'];
+$defaultTimeFilter = InputValidator::getEnumParam('defaulttimefilter', $allowedTimeFilters, 'oneweekago');
+$customActive = $defaultTimeFilter === "customrange" ? "active" : "";
+$dayActive = $defaultTimeFilter === "onedayago" ? "active" : "";
+$weekActive = $defaultTimeFilter === "oneweekago" ? "active" : "";
+$monthActive = $defaultTimeFilter === "onemonthago" ? "active" : "";
+$yearActive = $defaultTimeFilter === "oneyearago" ? "active" : "";
 
+$dataDirection = InputValidator::getEnumParam('retdirection', ['asc', 'desc'], 'desc');
 
-$dataDirection = "desc";
-if (isset($_GET['retdirection'])) {
-    $dataDirection = $_GET['retdirection'];
+$allowedPageSizes = [10, 25, 50, 100, 250, 500];
+$pageSize = InputValidator::getIntParam('pagesize', 25, 1, 1000);
+if (!in_array($pageSize, $allowedPageSizes, true)) {
+    $pageSize = 25;
 }
-$pageSize = 25;
-if (isset($_GET['pagesize'])) {
-    $pageSize = $_GET['pagesize'];
-}
-$pageNum = 0;
-if (isset($_GET['pagenum'])) {
-    $pageNum = $_GET['pagenum'];
-}
+$pageNum = InputValidator::getIntParam('pagenum', 0, 0, 100000);
 
-$editor = null;
-if (isset($_GET['editor'])) {
-    $editor = $_GET['editor'];
-}
-$datafrm = null;
-if (isset($_GET['datafrm'])) {
-    $datafrm = $_GET['datafrm'];
-}
+$editor = InputValidator::getStringParamOrNull('editor');
+$datafrm = InputValidator::getStringParamOrNull('datafrm');
+
+//-1 selects entries with no group, arm or instance
 $datagrp = null;
 if (isset($_GET['datagrp'])) {
-    $datagrp = $_GET['datagrp'] == $noGroup ? -1 : $_GET['datagrp'];
+    $datagrp = $_GET['datagrp'] == $noGroup ? -1 : InputValidator::validateIntOrNull($_GET['datagrp'], -1);
 }
-$dataevnt = null;
-if (isset($_GET['dataevnt'])) {
-    $dataevnt = $_GET['dataevnt'];
-}
-$dataarm = null;
-if (isset($_GET['dataarm'])) {
-    $dataarm = $_GET['dataarm'];
-}
-$datainstance = null;
-if (isset($_GET['datainst'])) {
-    $datainstance = $_GET['datainst'];
-}
-$fieldNameOrLabel = null;
-if (isset($_GET['fldnamelbl'])) {
-    $fieldNameOrLabel = $_GET['fldnamelbl'];
-}
-$newDataValue = null;
-if (isset($_GET['newdatavalue'])) {
-    $newDataValue = $_GET['newdatavalue'];
-}
-$logDescription = null;
-if (isset($_GET['logdescription'])) {
-    $logDescription = $_GET['logdescription'];
-}
-$changeReason = null;
-if (isset($_GET['changereason'])) {
-    $changeReason = $_GET['changereason'];
-}
+$dataevnt = InputValidator::getIntParamOrNull('dataevnt', -1);
+$dataarm = InputValidator::getIntParamOrNull('dataarm', -1);
+$datainstance = InputValidator::getIntParamOrNull('datainst', -1);
+
+$fieldNameOrLabel = InputValidator::getStringParamOrNull('fldnamelbl');
+$newDataValue = InputValidator::getStringParamOrNull('newdatavalue');
+$logDescription = InputValidator::getStringParamOrNull('logdescription');
+$changeReason = InputValidator::getStringParamOrNull('changereason');
 
 $skipCount = (int)$pageSize * (int)$pageNum;
 
@@ -177,7 +141,7 @@ $fixMaxDate = $actMaxAsDate > Utility::Now() ? Utility::Now() : $actMaxAsDate;
 $diff = $actMaxAsDate->diff($actMinAsDate);
 
 //get the permitted max days from config; defaults to 31 if not configured
-$maxDays = $module->getProjectSetting('max-days-all-records') ?: 31;
+$maxDays = (int)($module->getProjectSetting('max-days-all-records') ?: 31);
 
 if ($maxDays > 365) {
     $maxDays = 31;
@@ -201,7 +165,7 @@ if($recordId == "" && $diff->days > (int)$maxDays)
     $runMessage = "";
 }
 
-$totalCount = $logDataSets['totalCount'];
+$totalCount = (int)$logDataSets['totalCount'];
 $dcs = $logDataSets['dataChanges'];
 $logUsers = $logDataSets['logUsers'];
 
@@ -240,6 +204,13 @@ if($showingCount < $pageSize) {
 $pagingInfo = "records {$skipFrom} to {$skipTo} of {$totalCount}";
 
 
+//values from the query string are escaped for display only; the query above uses them unescaped
+$minDateHtml = $module->escape($minDate);
+$maxDateHtml = $module->escape($maxDate);
+$fieldNameOrLabelHtml = $module->escape($fieldNameOrLabel);
+$newDataValueHtml = $module->escape($newDataValue);
+$changeReasonHtml = $module->escape($changeReason);
+
 //display
 $userGrpDropDown = $projUsesGroups ?
     "<td><label>Group</label></td>
@@ -273,7 +244,7 @@ $reasonChange = !$usesChangeReasons ? "<td/><td/>" :
         <div style='display: flex; flex-direction: row'>
             <div>           
             <input id='changereason' name='changereason' type='text' size='20' maxlength='100'
-                value='$changeReason' class='x-form-text x-form-field ui-autocomplete-input' autocomplete='off'
+                value='$changeReasonHtml' class='x-form-text x-form-field ui-autocomplete-input' autocomplete='off'
                 onchange='onFilterChanged(\"changereason\")'></div>                                            
             <div><button class='clear-button' type='button' onclick='clearFilter(\"changereason\")'><small><i class='fas fa-eraser'></i></small></button></div></div></td>";
 
@@ -311,11 +282,11 @@ echo "
             </tr>
             <tr>
                 <td><label>Min edit date</label></td>
-                <td><input id='startdt' style='width: 150px' name='startdt' class='x-form-text x-form-field' type='text' data-df='$userDateFormat' value='$minDate'></td>
+                <td><input id='startdt' style='width: 150px' name='startdt' class='x-form-text x-form-field' type='text' data-df='$userDateFormat' value='$minDateHtml'></td>
                 <td><button class='clear-button' type='button' onclick='resetDate(\"startdt\")'><small><i class='fas fa-eraser'></i></small></button></td>
                 
                 <td><label>Max edit date</label></td>
-                <td><input id='enddt' name='enddt' class='x-form-text x-form-field' type='text' data-df='$userDateFormat' value='$maxDate'></td>
+                <td><input id='enddt' name='enddt' class='x-form-text x-form-field' type='text' data-df='$userDateFormat' value='$maxDateHtml'></td>
                 <td><button style='margin-left: 0' class='clear-button' type='button' onclick='resetDate(\"enddt\")'><small><i class='fas fa-eraser'></i></small></button></td>
                 
                 <td>
@@ -350,7 +321,7 @@ echo "
                 <td>
                     <div style='display: flex; flex-direction: row'>
                         <div><input id='fldnamelbl' name='fldnamelbl' type='text' size='20' maxlength='100'
-                            value='$fieldNameOrLabel' 
+                            value='$fieldNameOrLabelHtml' 
                             class='x-form-text x-form-field ui-autocomplete-input' autocomplete='off'
                             onchange='onFilterChanged(\"fieldNameOrLabelChanged\")'>
                           </div>                                            
@@ -363,7 +334,7 @@ echo "
                 <td>
                     <div style='display: flex; flex-direction: row'>
                         <div><input id='newdatavalue' name='newdatavalue' type='text' size='20' maxlength='100'
-                            value='$newDataValue' 
+                            value='$newDataValueHtml' 
                             class='x-form-text x-form-field ui-autocomplete-input' autocomplete='off'
                             onchange='onFilterChanged(\"newdatavalue\")'>
                           </div>                                            

@@ -283,7 +283,7 @@ The `export_type` parameter is validated against allowed values: `current_page`,
 
 6. **Default Date Range:** When no minimum date is specified, the module defaults to 5 years ago (configurable via `Utility::DEFAULT_MIN_DATE_YEARS_AGO`).
 
-7. **Export Limits:** CSV exports are capped at 1,000,000 records (`MAX_EXPORT_RECORDS` constant in `csv_export.php`).
+7. **Export Limits:** CSV exports are capped at 1,000,000 records (`$maxExportRecords` in `csv_export.php`).
 
 ## Hooks Used
 

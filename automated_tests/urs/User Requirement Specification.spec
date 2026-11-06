@@ -29,3 +29,4 @@ E.127.2800 – The system shall support the integration of the Data Entry Log ex
 E.127.2900 – The system shall support the integration of the Data Entry Log external module for Non-longitudinal projects utilizing Non-repeating Instruments and without DAGs.
 E.127.3000 - The system shall support the ability to configure 'Module configuration permissions in projects' for Data Entry Log external module.
 E.127.3100 - The system shall record every configuration change (who changed which setting, when, and from what value to what) for the Data Entry Log external module to the module's View Logs page.
+E.127.3200 - The system shall show filter values and logged data values as plain text, and limit the export to users with Logging rights, in the Data Entry Log external module.

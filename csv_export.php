@@ -155,7 +155,7 @@ if ($fp && $result)
             $row["form name"] = $dc->formName;
             $row["field"] = $dc->fieldName;
             $row["field label"] = $dc->fieldLabel;
-            $row["value"] = $dc->newValue;
+            $row["value"] = stripcslashes((string)$dc->newValue);
             $row["reason for change"] = $dc->reason;
             $row["action"] = $dc->description;
 

@@ -18,7 +18,7 @@ The module has been tested with:
 | | Versions |
 |---|---|
 | PHP | 8.2 |
-| REDCap | 14.7.0, 15.5.36, 17.5.6 |
+| REDCap | 14.7.0, 15.5.36, 17.5.6, 17.5.9 |
 
 `config.json` sets no PHP or REDCap version limits.
 

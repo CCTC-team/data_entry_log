@@ -20,33 +20,24 @@ $allowedTimeFilters = ['customrange', 'onedayago', 'oneweekago', 'onemonthago', 
 $allowedDirections = ['asc', 'desc'];
 $allowedPageSizes = [10, 25, 50, 100, 250, 500];
 
-// Get the user's date format for validation
-$userDateFormat = Utility::UserDateTimeFormatNoSeconds();
-
 //get form values - sanitized string parameters
 $recordId = InputValidator::getStringParam('record_id', "");
 $editor = InputValidator::getStringParam('editor', "");
 $datafrm = InputValidator::getStringParamOrNull('datafrm');
-$fieldnamelabel = InputValidator::getStringParamOrNull('fldnamelbl');
-$newdatavalue = InputValidator::getStringParamOrNull('newdatavalue');
-$logdescription = InputValidator::getStringParamOrNull('logdescription');
-$changereason = InputValidator::getStringParamOrNull('changereason');
+$fieldNameOrLabel = InputValidator::getStringParamOrNull('fldnamelbl');
+$newDataValue = InputValidator::getStringParamOrNull('newdatavalue');
+$logDescription = InputValidator::getStringParamOrNull('logdescription');
+$changeReason = InputValidator::getStringParamOrNull('changereason');
 
-// Date parameters - validate format or use defaults
+//dates keep what the user typed so that a cleared date means no limit, as on the log page
 $minDate = $oneWeekAgo;
-if (isset($_GET['startdt']) && $_GET['startdt'] !== "") {
-    $validatedMinDate = InputValidator::validateDateString($_GET['startdt'], $userDateFormat);
-    if ($validatedMinDate !== null) {
-        $minDate = $validatedMinDate;
-    }
+if (isset($_GET['startdt'])) {
+    $minDate = InputValidator::sanitizeString($_GET['startdt']);
 }
 
 $maxDate = null;
-if (isset($_GET['enddt']) && $_GET['enddt'] !== "") {
-    $validatedMaxDate = InputValidator::validateDateString($_GET['enddt'], $userDateFormat);
-    if ($validatedMaxDate !== null) {
-        $maxDate = $validatedMaxDate;
-    }
+if (isset($_GET['enddt'])) {
+    $maxDate = InputValidator::sanitizeString($_GET['enddt']);
 }
 
 // Time filter - validate against allowed values
@@ -70,21 +61,11 @@ if (!in_array($pageSize, $allowedPageSizes)) {
 // Page number - validate as non-negative integer
 $pageNum = InputValidator::getIntParam('pagenum', 0, 0, 100000);
 
-// Group - can be integer or empty string
-$datagroup = "";
-if (isset($_GET['datagrp']) && $_GET['datagrp'] !== "") {
-    $validatedGroup = InputValidator::validateIntOrNull($_GET['datagrp'], 0);
-    $datagroup = $validatedGroup !== null ? (string)$validatedGroup : "";
-}
-
-// Event - validate as integer or null
-$dataevnt = InputValidator::getIntParamOrNull('dataevnt', 0);
-
-// Arm - validate as integer or null
-$dataarm = InputValidator::getIntParamOrNull('dataarm', 0);
-
-// Instance - validate as integer or null
-$datainstance = InputValidator::getIntParamOrNull('datainst', 0);
+//-1 selects entries with no group, arm or instance
+$datagrp = isset($_GET['datagrp']) ? InputValidator::validateIntOrNull($_GET['datagrp'], -1) : null;
+$dataevnt = InputValidator::getIntParamOrNull('dataevnt', -1);
+$dataarm = InputValidator::getIntParamOrNull('dataarm', -1);
+$datainstance = InputValidator::getIntParamOrNull('datainst', -1);
 
 // Include no timestamp checkbox - validate against expected value
 $incNoTimestamp = "";

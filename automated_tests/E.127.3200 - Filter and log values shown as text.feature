@@ -92,6 +92,15 @@ Feature: E.127.3200 - The system shall show filter values and logged data values
     And the Data Entry Log export requested directly should NOT contain ",=1+1"
     And the Data Entry Log export requested directly should contain "<0.5"
 
+  Scenario: The export applies the filters from the log page
+    Given I click on the link labeled "Data Entry Log"
+    Then the Data Entry Log export of "newdatavalue=bold&export_type=current_page" requested directly should contain "<b>bold</b>"
+    And the Data Entry Log export of "newdatavalue=bold&export_type=current_page" requested directly should NOT contain "=1+1"
+
+  Scenario: Export everything ignores the arm filter
+    Given I click on the link labeled "Data Entry Log"
+    Then the Data Entry Log export of "dataarm=999&export_type=everything" requested directly should contain "<b>bold</b>"
+
   Scenario: Disable external module
     Given I click on the link labeled "Control Center"
     And I click on the link labeled "Manage"

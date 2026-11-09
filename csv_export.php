@@ -82,14 +82,15 @@ if($exportType == 'everything') {
     $minDateDb = null;
     $maxDateDb = null;
     $editor = null;
-    $datagroup = null;
+    $datagrp = null;
     $dataevnt = null;
+    $dataarm = null;
     $datainstance = null;
     $datafrm = null;
-    $fieldnamelabel = null;
-    $newdatavalue = null;
-    $logdescription = null;
-    $changereason = null;
+    $fieldNameOrLabel = null;
+    $newDataValue = null;
+    $logDescription = null;
+    $changeReason = null;
 
     //includes items with no timestamp
     $incNoTimestamp = "checked";
@@ -148,7 +149,7 @@ if ($fp && $result)
             $row["group name"] = $dc->groupName;
             $row["event id"] = $dc->eventId;
             $row["event name"] = $dc->eventName;
-            $row["arm number"] = $dc->armNumber;
+            $row["arm number"] = $dc->armNum;
             $row["arm name"] = $dc->armName;
             $row["instance"] = $dc->instance;
             $row["form name"] = $dc->formName;

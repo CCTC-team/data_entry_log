@@ -28,6 +28,13 @@ class GetDbData
         return (string)(int)$value;
     }
 
+    // Logged values keep the SQL escaping from the log entry, and LIKE treats a backslash as its own
+    // escape character, so a search term needs both applied to match e.g. O\'Brien
+    private static function LogValuePattern(?string $value): ?string
+    {
+        return $value === null ? null : str_replace('\\', '\\\\', addslashes($value));
+    }
+
     // returns all the dags for the current project and user
     // if the username is not given, just assumes the current user
     public static function GetUserDags(bool $getAll, ?string $username): array
@@ -175,7 +182,7 @@ class GetDbData
         $changeReasonSafe = self::escapeStringParam($conn, $changeReason);
         $dataFormSafe = self::escapeStringParam($conn, $dataForm);
         $fieldNameOrLabelSafe = self::escapeStringParam($conn, $fieldNameOrLabel);
-        $newDataValueSafe = self::escapeStringParam($conn, $newDataValue);
+        $newDataValueSafe = self::escapeStringParam($conn, self::LogValuePattern($newDataValue));
         $excludeFieldNameRegexSafe = self::escapeStringParam($conn, $excludeFieldNameRegex);
 
         $query = "call GetDataEntryLogs($skipCountSafe, $pageSizeSafe, $projIdSafe, '$retDirection', $recordIdSafe,

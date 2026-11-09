@@ -155,7 +155,8 @@ if ($fp && $result)
             $row["form name"] = $dc->formName;
             $row["field"] = $dc->fieldName;
             $row["field label"] = $dc->fieldLabel;
-            $row["value"] = $dc->newValue;
+            // line breaks are replaced as REDCap does for its CSV exports, so each log entry stays on one row
+            $row["value"] = str_replace(["\r\n", "\n", "\r"], ["  ", "  ", ""], stripcslashes((string)$dc->newValue));
             $row["reason for change"] = $dc->reason;
             $row["action"] = $dc->description;
 

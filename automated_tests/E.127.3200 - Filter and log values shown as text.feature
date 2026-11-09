@@ -101,6 +101,19 @@ Feature: E.127.3200 - The system shall show filter values and logged data values
     Given I click on the link labeled "Data Entry Log"
     Then the Data Entry Log export of "dataarm=999&export_type=everything" requested directly should contain "<b>bold</b>"
 
+  Scenario: Filtering on a value containing an apostrophe finds it
+    Given I click on the link labeled "Data Entry Log"
+    When I enter "O'Brien" into the input field labeled "New value"
+    And I wait for 1 second
+    And I click on the button labeled "Custom range"
+    Then I should see 1 row in the data entry log table
+    And I should see "O'Brien <b>bold</b>"
+    And the Data Entry Log filter "newdatavalue" should have the value "O'Brien"
+
+  Scenario: The export shows an apostrophe as entered
+    Given I click on the link labeled "Data Entry Log"
+    Then the Data Entry Log export of "newdatavalue=O'Brien&export_type=current_page" requested directly should contain "O'Brien <b>bold</b>"
+
   Scenario: Disable external module
     Given I click on the link labeled "Control Center"
     And I click on the link labeled "Manage"

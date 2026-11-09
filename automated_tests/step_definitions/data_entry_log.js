@@ -79,3 +79,44 @@ Given("the Data Entry Log export requested directly should contain {string}", (t
 Given("the Data Entry Log export requested directly should NOT contain {string}", (text) => {
     requestExport().its('body').should('not.include', text)
 })
+
+/**
+ * @module DataEntryLog
+ * @author Mintoo Xavier <min2xavier@gmail.com>
+ * @example I set the Data Entry Log filter {string} to {string}
+ * @param {string} id - id of the dropdown
+ * @param {string} value - option value
+ * @description Selects an option in a filter dropdown, which reloads the page
+ */
+Given("I set the Data Entry Log filter {string} to {string}", (id, value) => {
+    cy.get(`#${id}`).should('not.be.disabled').select(value)
+    cy.location('search').should('include', `${id}=${value}`)
+})
+
+
+/**
+ * @module DataEntryLog
+ * @author Mintoo Xavier <min2xavier@gmail.com>
+ * @example I click the Data Entry Log paging button {string}
+ * @param {string} id - id of the button
+ * @description Clicks the next or previous page button
+ */
+Given("I click the Data Entry Log paging button {string}", (id) => {
+    const pagenum = id === 'btnnextpage' ? 'pagenum=1' : 'pagenum=0'
+    cy.document().its('readyState').should('eq', 'complete')
+    cy.get(`#${id}`).should('not.be.disabled').then(($button) => $button[0].click())
+    cy.location('search').should('include', pagenum)
+})
+
+
+/**
+ * @module DataEntryLog
+ * @author Mintoo Xavier <min2xavier@gmail.com>
+ * @example I reset the Data Entry Log filters
+ * @description Clicks the reset button on the filter form
+ */
+Given("I reset the Data Entry Log filters", () => {
+    cy.document().its('readyState').should('eq', 'complete')
+    cy.contains('button.clear-button', 'reset').then(($button) => $button[0].click())
+    cy.location('search').should('not.include', 'defaulttimefilter=')
+})

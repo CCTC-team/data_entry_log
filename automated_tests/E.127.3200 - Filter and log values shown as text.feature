@@ -133,6 +133,14 @@ Feature: E.127.3200 - The system shall show filter values and logged data values
     Then I enter "Paging record 4" into the data entry form field labeled "Name"
     And I click on the button labeled "Save & Exit Form"
     Then I should see "Record Home Page"
+    # Filters and buttons below are found by their page ID (the name also used in the page URL), not their on-screen label:
+    #   "defaulttimefilter" - hidden field set by the "Past month" button (the visible result is the "Min edit date")
+    #   "retdirection"      - the "Order by" dropdown ("asc" = Ascending, "desc" = Descending)
+    #   "pagesize"          - the "Page size" dropdown
+    #   "btnnextpage"       - the forward (right arrow) paging button
+    #   "btnprevpage"       - the back (left arrow) paging button
+    #   "pagenum"           - hidden field holding the current page number (first page = 0); not visible on screen,
+    #                         use the browser's Inspect to see it
     Given I click on the link labeled "Data Entry Log"
     When I click on the button labeled "Past month"
     And I wait for 2 seconds

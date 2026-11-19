@@ -1,4 +1,13 @@
-const { Given } = require('@badeball/cypress-cucumber-preprocessor')
+const { Given, defineParameterType } = require('@badeball/cypress-cucumber-preprocessor')
+
+defineParameterType({
+    name: 'emTableName',
+    regexp: /data entry log/
+})
+
+const emTableName = {
+    'data entry log' : '#log-data-entry-event-table'
+}
 
 // Requests the export page directly rather than through its buttons, which only appear on the log page.
 function requestExport(params = '') {
@@ -119,4 +128,23 @@ Given("I reset the Data Entry Log filters", () => {
     cy.document().its('readyState').should('eq', 'complete')
     cy.contains('button.clear-button', 'reset').then(($button) => $button[0].click())
     cy.location('search').should('not.include', 'defaulttimefilter=')
+})
+
+
+/**
+ * @module DataEntryLog
+ * @author Mintoo Xavier <min2xavier@gmail.com>
+ * @example I should see {int} row(s) in the {emTableName} table
+ * @param {int} num - number of row(s)
+ * @param {string} emTableName - available options: 'data entry log'
+ * @description verifies the table contains the specified number of row(s)
+ */
+Given('I should see {int} row(s) in the {emTableName} table', (num, tableName) => {
+    const element = emTableName[tableName] + ' tbody tr'
+    cy.get(element).its('length').then ((rowCount) => {
+        // Subtracting 1 for header
+        rowCount = rowCount - 1
+
+        expect(rowCount).to.be.equal(num)
+    })
 })
